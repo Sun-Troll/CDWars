@@ -68,7 +68,7 @@ public:
 	{
 		return x * rhs.x + y * rhs.y;
 	}
-private:
+public:
 	T x;
 	T y;
 };
