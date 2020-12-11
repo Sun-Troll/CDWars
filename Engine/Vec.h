@@ -15,7 +15,7 @@ public:
 	{
 		return Vec_{ x + rhs.x, y + rhs.y };
 	}
-	Vec_& operator+=(const Vec_&rhs)
+	Vec_& operator+=(const Vec_& rhs)
 	{
 		return *this = *this + rhs;
 	}

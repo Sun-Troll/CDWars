@@ -6,7 +6,7 @@ template<typename T>
 class Circ_
 {
 public:
-	constexpr Circ_(Vec_<T> center_in, T radius_in)
+	constexpr Circ_(const Vec_<T>& center_in, T radius_in)
 		:
 		center(center_in),
 		radius(radius_in)

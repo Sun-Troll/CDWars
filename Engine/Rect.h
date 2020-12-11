@@ -13,11 +13,11 @@ public:
 		top(top_in),
 		bottom(bottom_in)
 	{}
-	Rect_(Vec_<T> leftTop, Vec_<T> rightBottom)
+	Rect_(const Vec_<T>& leftTop, const Vec_<T>& rightBottom)
 		:
 		Rect_(leftTop.x, rightBottom.x, leftTop.y, rightBottom.y)
 	{}
-	Rect_(Vec_<T> leftTop, T width, T height)
+	Rect_(const Vec_<T>& leftTop, T width, T height)
 		:
 		Rect_(leftTop.x, leftTop.x + width, leftTop.y, leftTop.y + height)
 	{}
