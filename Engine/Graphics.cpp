@@ -332,6 +332,102 @@ void Graphics::DrawRect(const RectI& rect, Color c)
 	}
 }
 
+void Graphics::DrawCirc(const CircI& circ, Color c)
+{
+	assert(circ.radius > 0);
+	const int left = circ.center.x - circ.radius + 1;
+	const int right = circ.center.x + circ.radius - 1;
+	const int top = circ.center.y - circ.radius + 1;
+	const int bottom = circ.center.y + circ.radius - 1;
+	if (left < ScreenWidth && right >= 0 && top < ScreenHeight && bottom >= 0)
+	{
+		if (circ.center.y >= 0 && circ.center.y < ScreenHeight)
+		{
+			if (left >= 0)
+			{
+				PutPixel(left, circ.center.y, c);
+			}
+			if (right < ScreenWidth)
+			{
+				PutPixel(right, circ.center.y, c);
+			}
+		}
+		if (circ.center.x >= 0 && circ.center.x < ScreenWidth)
+		{
+			if (top >= 0)
+			{
+				PutPixel(circ.center.x, top, c);
+			}
+			if (bottom < ScreenHeight)
+			{
+				PutPixel(circ.center.x, bottom, c);
+			}
+		}
+		const int radSq = circ.radius * circ.radius;
+		const int stop = int(std::sqrt(radSq / 2));
+		for (int x = 1; x <= stop; ++x)
+		{
+			const int y = int(std::sqrt(radSq - x * x));
+			const int left = circ.center.x - x;
+			const int right = circ.center.x + x;
+			const int top = circ.center.y - y;
+			const int bottom = circ.center.y + y;
+			if (left >= 0 && left < ScreenWidth)
+			{
+				if (top >= 0 && top < ScreenHeight)
+				{
+					PutPixel(left, top, c);
+				}
+				if (bottom >= 0 && bottom < ScreenHeight)
+				{
+					PutPixel(left, bottom, c);
+				}
+			}
+			if (right >= 0 && right < ScreenWidth)
+			{
+				if (top >= 0 && top < ScreenHeight)
+				{
+					PutPixel(right, top, c);
+				}
+				if (bottom >= 0 && bottom < ScreenHeight)
+				{
+					PutPixel(right, bottom, c);
+				}
+			}
+		}
+		for (int y = 1; y <= stop; ++y)
+		{
+			const int x = int(std::sqrt(radSq - y * y));
+			const int left = circ.center.x - x;
+			const int right = circ.center.x + x;
+			const int top = circ.center.y - y;
+			const int bottom = circ.center.y + y;
+			if (left >= 0 && left < ScreenWidth)
+			{
+				if (top >= 0 && top < ScreenHeight)
+				{
+					PutPixel(left, top, c);
+				}
+				if (bottom >= 0 && bottom < ScreenHeight)
+				{
+					PutPixel(left, bottom, c);
+				}
+			}
+			if (right >= 0 && right < ScreenWidth)
+			{
+				if (top >= 0 && top < ScreenHeight)
+				{
+					PutPixel(right, top, c);
+				}
+				if (bottom >= 0 && bottom < ScreenHeight)
+				{
+					PutPixel(right, bottom, c);
+				}
+			}
+		}
+	}
+}
+
 
 //////////////////////////////////////////////////
 //           Graphics Exception
