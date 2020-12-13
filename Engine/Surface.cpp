@@ -72,12 +72,12 @@ Surface::Surface(int width, int height)
 	pixels(width * height)
 {}
 
-Surface::Surface(Surface&& donor)
+Surface::Surface(Surface&& donor) noexcept
 {
 	*this = std::move(donor);
 }
 
-Surface& Surface::operator=(Surface&& rhs)
+Surface& Surface::operator=(Surface&& rhs) noexcept
 {
 	width = rhs.width;
 	height = rhs.height;
