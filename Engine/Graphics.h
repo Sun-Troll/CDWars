@@ -26,6 +26,7 @@
 #include "Colors.h"
 #include "Surface.h"
 #include "Rect.h"
+#include "Circ.h"
 #include <cassert>
 
 class Graphics
@@ -61,6 +62,8 @@ public:
 		PutPixel(x, y, { unsigned char(r),unsigned char(g),unsigned char(b) });
 	}
 	void PutPixel(int x, int y, Color c);
+	void DrawRect(const RectI& rect, Color c);
+	void DrawCirc(const CircI& circ, Color c);
 	template<typename E>
 	void DrawSprite(int x, int y, const Surface& s, E effect)
 	{
