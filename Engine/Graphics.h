@@ -67,12 +67,12 @@ public:
 	template<typename E>
 	void DrawSprite(int x, int y, const Surface& s, E effect)
 	{
-		DrawSprite(x, y, s.GetRect(), s, effect);
+		DrawSprite(x, y, GetScreenRect(), s, effect);
 	}
 	template<typename E>
-	void DrawSprite(int x, int y, const RectI& srcRect, const Surface& s, E effect)
+	void DrawSprite(int x, int y, const RectI& clip, const Surface& s, E effect)
 	{
-		DrawSprite(x, y, srcRect, GetScreenRect(), s, effect);
+		DrawSprite(x, y, s.GetRect(), clip, s, effect);
 	}
 	template<typename E>
 	void DrawSprite(int x, int y, RectI srcRect, const RectI& clip, const Surface& s, E effect)
@@ -129,9 +129,13 @@ private:
 	D3D11_MAPPED_SUBRESOURCE							mappedSysBufferTexture;
 	Color*                                              pSysBuffer = nullptr;
 public:
-	static constexpr int ScreenWidth = 800;
-	static constexpr int ScreenHeight = 600;
+	static constexpr int ScreenWidth = 1900;
+	static constexpr int ScreenHeight = 1000;
+	static constexpr int menuWidth = 300;
+	static constexpr int gameWidth = ScreenWidth - menuWidth;
 	static RectI GetScreenRect();
+	static RectI GetGameRect();
+	static RectI GetMenuRect();
 };
 
 #include "SpriteEffect.h"

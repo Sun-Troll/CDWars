@@ -15,7 +15,7 @@ Font::Font(const std::string& filename, Color chroma)
 	assert(glyphHeight * nRows == surface.GetHeight());
 }
 
-void Font::DrawText(const std::string& text, const VecI& pos, Color color, Graphics& gfx) const
+void Font::DrawText(const std::string& text, const VecI& pos, Color color, const RectI& clip, Graphics& gfx) const
 {
 	// create effect functor
 	SpriteEffect::Substitution e{ chroma, color };
@@ -38,7 +38,7 @@ void Font::DrawText(const std::string& text, const VecI& pos, Color color, Graph
 		else if (c >= firstChar + 1 && c <= lastChar)
 		{
 			// use DrawSpriteSubstitute so that we can choose the color of the font rendered
-			gfx.DrawSprite(curPos.x, curPos.y, MapGlyphRect(c), surface, e);
+			gfx.DrawSprite(curPos.x, curPos.y, MapGlyphRect(c), clip, surface, e);
 		}
 		// advance screen pos for next character
 		curPos.x += glyphWidth;

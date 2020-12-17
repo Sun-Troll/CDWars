@@ -21,11 +21,15 @@
 #include "MainWindow.h"
 #include "Game.h"
 
-Game::Game( MainWindow& wnd )
+Game::Game(MainWindow& wnd)
 	:
-	wnd( wnd ),
-	gfx( wnd )
+	wnd(wnd),
+	gfx(wnd),
+	f("Sprites\\Fonts\\asciitext.bmp"),
+	world("Sprites\\Maps\\worldLT.bmp", "Sprites\\Maps\\worldRT.bmp",
+		"Sprites\\Maps\\worldLB.bmp", "Sprites\\Maps\\worldRB.bmp")
 {
+	loadTime = "load time: " + std::to_string(stLoad.Duration());
 }
 
 void Game::Go()
@@ -38,8 +42,36 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	float ft = frameTimer.Duration();
+
+	bool left = false;
+	bool right = false;
+	bool up = false;
+	bool down = false;
+
+	if (wnd.kbd.KeyIsPressed('A'))
+	{
+		left = true;
+	}
+	if (wnd.kbd.KeyIsPressed('D'))
+	{
+		right = true;
+	}
+	if (wnd.kbd.KeyIsPressed('W'))
+	{
+		up = true;
+	}
+	if (wnd.kbd.KeyIsPressed('S'))
+	{
+		down = true;
+	}
+
+	world.MoveCamera(left, right, up, down, ft);
 }
 
 void Game::ComposeFrame()
 {
+	world.RenderMap(gfx);
+	world.RenderText(f, gfx);
+	f.DrawText(loadTime, { 0, 0 }, Colors::Black, Graphics::GetScreenRect(), gfx);
 }
