@@ -10,6 +10,7 @@ class Surface
 public:
 	Surface(const std::string& filename);
 	Surface(int width, int height);
+	Surface(int width, int height, Color c);
 	Surface(Surface&& donor) noexcept;
 	Surface(const Surface&) = default;
 	Surface& operator=(Surface&& rhs) noexcept;

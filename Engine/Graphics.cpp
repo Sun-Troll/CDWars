@@ -257,6 +257,16 @@ RectI Graphics::GetScreenRect()
 	return{ 0,ScreenWidth,0,ScreenHeight };
 }
 
+RectI Graphics::GetGameRect()
+{
+	return { 0, gameWidth, 0, ScreenHeight };
+}
+
+RectI Graphics::GetMenuRect()
+{
+	return { ScreenWidth - menuWidth, ScreenWidth, 0, ScreenHeight };
+}
+
 void Graphics::EndFrame()
 {
 	HRESULT hr;
