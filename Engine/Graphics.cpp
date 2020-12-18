@@ -252,6 +252,70 @@ Graphics::~Graphics()
 	if (pImmediateContext) pImmediateContext->ClearState();
 }
 
+void Graphics::DrawLine(VecF v0, VecF v1, Color c)
+{
+	if (v0.y == v1.y)
+	{
+		if (v0.x > v1.x)
+		{
+			std::swap(v0, v1);
+		}
+		for (float x = std::floor(v0.x); x < v1.x; ++x)
+		{
+			PutPixel(int(x), int(v0.y), c);
+		}
+	}
+
+	else if (v0.x == v1.x)
+	{
+		if (v0.y > v1.y)
+		{
+			std::swap(v0, v1);
+		}
+		for (float y = std::floor(v0.y); y < v1.y; ++y)
+		{
+			PutPixel(int(v0.x), int(y), c);
+		}
+	}
+
+	else
+	{
+		const float rise = v1.x - v0.x;
+		const float run = v1.y - v0.y;
+
+		if (std::abs(rise) > std::abs(run))
+		{
+			if (v0.x > v1.x)
+			{
+				std::swap(v0, v1);
+			}
+
+			const float m = run / rise;
+			const float b = v0.y - v0.x * m;
+
+			for (float x = std::floor(v0.x); x < v1.x; ++x)
+			{
+				PutPixel(int(x), int(x * m + b), c);
+			}
+		}
+		else
+		{
+			if (v0.y > v1.y)
+			{
+				std::swap(v0, v1);
+			}
+
+			const float mr = rise / run;
+			const float br = v0.x - v0.y * mr;
+
+			for (float y = std::floor(v0.y); y < v1.y; ++y)
+			{
+				PutPixel(int(y * mr + br), int(y), c);
+			}
+		}
+	}
+}
+
 RectI Graphics::GetScreenRect()
 {
 	return{ 0,ScreenWidth,0,ScreenHeight };

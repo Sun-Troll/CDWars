@@ -6,18 +6,18 @@ World::World(const std::string& mapLT_in, const std::string& mapRT_in,
 	const std::string& mapLB_in, const std::string& mapRB_in)
 {
 	//test code
-	/*mapLT = Surface{ int(worldRect.GetWidth() / 2), int(worldRect.GetHeight() / 2), forrest };
+	mapLT = Surface{ int(worldRect.GetWidth() / 2), int(worldRect.GetHeight() / 2), forrest };
 	mapRT = Surface{ int(worldRect.GetWidth() / 2), int(worldRect.GetHeight() / 2), swamp };
 	mapLB = Surface{ int(worldRect.GetWidth() / 2), int(worldRect.GetHeight() / 2), dessert };
-	mapRB = Surface{ int(worldRect.GetWidth() / 2), int(worldRect.GetHeight() / 2), tundra };*/
+	mapRB = Surface{ int(worldRect.GetWidth() / 2), int(worldRect.GetHeight() / 2), tundra };
 	//main code
-	std::thread t1(&World::LoadMap, std::ref(*this), std::ref(mapLT), std::cref(mapLT_in));
+	/*std::thread t1(&World::LoadMap, std::ref(*this), std::ref(mapLT), std::cref(mapLT_in));
 	std::thread t2(&World::LoadMap, std::ref(*this), std::ref(mapRT), std::cref(mapRT_in));
 	std::thread t3(&World::LoadMap, std::ref(*this), std::ref(mapLB), std::cref(mapLB_in));
 	LoadMap(mapRB, mapRB_in);
 	t1.join();
 	t2.join();
-	t3.join();
+	t3.join();*/
 	assert(worldRect.GetWidth() / 2 == mapLT.GetWidth());
 	assert(worldRect.GetHeight() / 2 == mapLT.GetHeight());
 	assert(worldRect.GetWidth() / 2 == mapRT.GetWidth());
