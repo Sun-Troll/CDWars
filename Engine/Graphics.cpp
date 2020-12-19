@@ -254,63 +254,79 @@ Graphics::~Graphics()
 
 void Graphics::DrawLine(VecF v0, VecF v1, Color c)
 {
-	if (v0.y == v1.y)
+	if (std::max(v0.x, v1.x) >= 0 && std::min(v0.x, v1.x) < gameWidth
+		&& std::max(v0.y, v1.y) >= 0 && std::min(v0.y, v1.y) < ScreenHeight)
 	{
-		if (v0.x > v1.x)
-		{
-			std::swap(v0, v1);
-		}
-		for (float x = std::floor(v0.x); x < v1.x; ++x)
-		{
-			PutPixel(int(x), int(v0.y), c);
-		}
-	}
-
-	else if (v0.x == v1.x)
-	{
-		if (v0.y > v1.y)
-		{
-			std::swap(v0, v1);
-		}
-		for (float y = std::floor(v0.y); y < v1.y; ++y)
-		{
-			PutPixel(int(v0.x), int(y), c);
-		}
-	}
-
-	else
-	{
-		const float rise = v1.x - v0.x;
-		const float run = v1.y - v0.y;
-
-		if (std::abs(rise) > std::abs(run))
+		if (v0.y == v1.y)
 		{
 			if (v0.x > v1.x)
 			{
 				std::swap(v0, v1);
 			}
-
-			const float m = run / rise;
-			const float b = v0.y - v0.x * m;
-
-			for (float x = std::floor(v0.x); x < v1.x; ++x)
+			const float stop = std::min(v1.x, float(gameWidth));
+			for (float x = std::max(std::floor(v0.x), 0.0f); x < stop; ++x)
 			{
-				PutPixel(int(x), int(x * m + b), c);
+				PutPixel(int(x), int(v0.y), c);
 			}
 		}
-		else
+
+		else if (v0.x == v1.x)
 		{
 			if (v0.y > v1.y)
 			{
 				std::swap(v0, v1);
 			}
-
-			const float mr = rise / run;
-			const float br = v0.x - v0.y * mr;
-
-			for (float y = std::floor(v0.y); y < v1.y; ++y)
+			const float stop = std::min(v1.y, float(ScreenHeight));
+			for (float y = std::max(std::floor(v0.y), 0.0f); y < stop; ++y)
 			{
-				PutPixel(int(y * mr + br), int(y), c);
+				PutPixel(int(v0.x), int(y), c);
+			}
+		}
+
+		else
+		{
+			const float run = v1.x - v0.x;
+			const float rise = v1.y - v0.y;
+
+			if (std::abs(run) > std::abs(rise))
+			{
+				if (v0.x > v1.x)
+				{
+					std::swap(v0, v1);
+				}
+
+				const float m = rise / run;
+				const float b = v0.y - v0.x * m;
+
+				const float stop = std::min(v1.x, float(gameWidth));
+				for (float x = std::max(std::floor(v0.x), 0.0f); x < stop; ++x)
+				{
+					const int y = int(x * m + b);
+					if (y >= 0 && y < ScreenHeight)
+					{
+						PutPixel(int(x), y, c);
+					}
+				}
+			}
+			else
+			{
+				if (v0.y > v1.y)
+				{
+					std::swap(v0, v1);
+				}
+
+				const float mr = run / rise;
+				const float br = v0.x - v0.y * mr;
+
+				const float stop = std::min(v1.y, float(ScreenHeight));
+				for (float y = std::max(std::floor(v0.y), 0.0f); y < stop; ++y)
+				{
+					const int x = int(y * mr + br);
+					if (x >= 0 && x < gameWidth)
+					{
+						PutPixel(x, int(y), c);
+					}
+				}
 			}
 		}
 	}

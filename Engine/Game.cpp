@@ -74,8 +74,4 @@ void Game::ComposeFrame()
 	world.RenderMap(gfx);
 	world.RenderText(f, gfx);
 	f.DrawText(loadTime, { 0, 0 }, Colors::Black, Graphics::GetScreenRect(), gfx);
-	if (wnd.mouse.LeftIsPressed())
-	{
-		gfx.DrawLine({ 800.0f, 500.0f }, wnd.mouse.GetPos(), Colors::Magenta);
-	}
 }
