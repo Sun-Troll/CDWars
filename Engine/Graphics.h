@@ -134,9 +134,15 @@ public:
 	static constexpr int ScreenHeight = 1000;
 	static constexpr int menuWidth = 300;
 	static constexpr int gameWidth = ScreenWidth - menuWidth;
+	static constexpr int gameMiddleX = gameWidth / 2;
+	static constexpr int gameMiddleY = ScreenHeight / 2;
 	static RectI GetScreenRect();
 	static RectI GetGameRect();
 	static RectI GetMenuRect();
+	static RectI GetGameLTRect();
+	static RectI GetGameRTRect();
+	static RectI GetGameLBRect();
+	static RectI GetGameRBRect();
 };
 
 #include "SpriteEffect.h"

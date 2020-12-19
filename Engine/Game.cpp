@@ -20,6 +20,8 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include <thread>
+#include <functional>
 
 Game::Game(MainWindow& wnd)
 	:
@@ -37,8 +39,16 @@ void Game::Go()
 	gfx.BeginFrame();
 	updateAndDrawWatch.Duration();
 	DrawPrepare();
-	DrawPartScreen(Graphics::GetGameRect());
+	std::thread t1(&Game::DrawPartScreen, std::ref(*this), Graphics::GetGameLTRect());
+	std::thread t2(&Game::DrawPartScreen, std::ref(*this), Graphics::GetGameRTRect());
+	std::thread t3(&Game::DrawPartScreen, std::ref(*this), Graphics::GetGameLBRect());
+	std::thread t4(&Game::DrawPartScreen, std::ref(*this), Graphics::GetGameRBRect());
+	//DrawPartScreen(Graphics::GetGameRect());
 	UpdateModel();
+	t1.join();
+	t2.join();
+	t3.join();
+	t4.join();
 	ComposeFrame();
 	updateAndDrawTime = updateAndDrawWatch.Duration() * 1000.0f;
 	gfx.EndFrame();
@@ -81,13 +91,12 @@ void Game::DrawPrepare()
 void Game::DrawPartScreen(const RectI& screenPart)
 {
 	world.RenderMap(gfx, screenPart);
-	world.RenderText(f, gfx);
 }
 
 void Game::ComposeFrame()
 {
 	//world.RenderMap(gfx, Graphics::GetGameRect());
-	//world.RenderText(f, gfx);
+	world.RenderText(f, gfx);
 	f.DrawText(loadTime, { 0, 0 }, Colors::Black, Graphics::GetScreenRect(), gfx);
 	f.DrawText("frame time ms: " + std::to_string(updateAndDrawTime), { 0, 40 }, Colors::Black, Graphics::GetScreenRect(), gfx);
 }
