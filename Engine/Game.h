@@ -45,9 +45,11 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	Stopwatch updateAndDrawWatch;
+	float updateAndDrawTime = 0.0f;
 	std::string loadTime;
-	Stopwatch stLoad;
 	Stopwatch frameTimer;
+	Stopwatch stLoad;
 	Font f;
 	World world;
 	/********************************/

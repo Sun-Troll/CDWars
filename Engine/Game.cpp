@@ -34,9 +34,11 @@ Game::Game(MainWindow& wnd)
 
 void Game::Go()
 {
-	gfx.BeginFrame();	
+	gfx.BeginFrame();
+	updateAndDrawWatch.Duration();
 	UpdateModel();
 	ComposeFrame();
+	updateAndDrawTime = updateAndDrawWatch.Duration() * 1000.0f;
 	gfx.EndFrame();
 }
 
@@ -74,4 +76,5 @@ void Game::ComposeFrame()
 	world.RenderMap(gfx);
 	world.RenderText(f, gfx);
 	f.DrawText(loadTime, { 0, 0 }, Colors::Black, Graphics::GetScreenRect(), gfx);
+	f.DrawText("frame time ms: " + std::to_string(updateAndDrawTime), { 0, 40 }, Colors::Black, Graphics::GetScreenRect(), gfx);
 }
