@@ -39,6 +39,8 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
+	void DrawPrepare();
+	void DrawPartScreen(const RectI& screenPart);
 	/********************************/
 private:
 	MainWindow& wnd;

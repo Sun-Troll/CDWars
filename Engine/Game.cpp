@@ -36,6 +36,8 @@ void Game::Go()
 {
 	gfx.BeginFrame();
 	updateAndDrawWatch.Duration();
+	DrawPrepare();
+	DrawPartScreen(Graphics::GetGameRect());
 	UpdateModel();
 	ComposeFrame();
 	updateAndDrawTime = updateAndDrawWatch.Duration() * 1000.0f;
@@ -71,10 +73,21 @@ void Game::UpdateModel()
 	world.MoveCamera(left, right, up, down, ft);
 }
 
+void Game::DrawPrepare()
+{
+	world.RenderPrepare();
+}
+
+void Game::DrawPartScreen(const RectI& screenPart)
+{
+	world.RenderMap(gfx, screenPart);
+	world.RenderText(f, gfx);
+}
+
 void Game::ComposeFrame()
 {
-	world.RenderMap(gfx);
-	world.RenderText(f, gfx);
+	//world.RenderMap(gfx, Graphics::GetGameRect());
+	//world.RenderText(f, gfx);
 	f.DrawText(loadTime, { 0, 0 }, Colors::Black, Graphics::GetScreenRect(), gfx);
 	f.DrawText("frame time ms: " + std::to_string(updateAndDrawTime), { 0, 40 }, Colors::Black, Graphics::GetScreenRect(), gfx);
 }

@@ -50,16 +50,18 @@ void World::MoveCamera(bool left, bool right, bool up, bool down, float dt)
 	cameraPos += move * cameraMoveSpeed * dt;
 }
 
-void World::RenderMap(Graphics& gfx) const
+void World::RenderPrepare()
 {
-	gfx.DrawSprite(left - int(cameraPos.x) + Graphics::gameWidth / 2, top - int(cameraPos.y) + Graphics::ScreenHeight / 2,
-		Graphics::GetGameRect(), mapLT, SpriteEffect::Copy{});
-	gfx.DrawSprite(0 - int(cameraPos.x) + Graphics::gameWidth / 2,top - int(cameraPos.y) + Graphics::ScreenHeight / 2,
-		Graphics::GetGameRect(), mapRT, SpriteEffect::Copy{});
-	gfx.DrawSprite(left - int(cameraPos.x) + Graphics::gameWidth / 2, 0 - int(cameraPos.y) + Graphics::ScreenHeight / 2,
-		Graphics::GetGameRect(), mapLB, SpriteEffect::Copy{});
-	gfx.DrawSprite(0 - int(cameraPos.x) + Graphics::gameWidth / 2, 0 - int(cameraPos.y) + Graphics::ScreenHeight / 2,
-		Graphics::GetGameRect(), mapRB, SpriteEffect::Copy{});
+	camRenderX = int(cameraPos.x) - Graphics::gameWidth / 2;
+	camRenderY = int(cameraPos.y) - Graphics::ScreenHeight / 2;
+}
+
+void World::RenderMap(Graphics& gfx, const RectI& DrawRect) const
+{
+	gfx.DrawSprite(left - camRenderX, top - camRenderY, DrawRect, mapLT, SpriteEffect::Copy{});
+	gfx.DrawSprite(0 - camRenderX, top - camRenderY, DrawRect, mapRT, SpriteEffect::Copy{});
+	gfx.DrawSprite(left - camRenderX, 0 - camRenderY, DrawRect, mapLB, SpriteEffect::Copy{});
+	gfx.DrawSprite(0 - camRenderX, 0 - camRenderY, DrawRect, mapRB, SpriteEffect::Copy{});
 }
 
 void World::RenderText(Font& f, Graphics& gfx) const

@@ -8,7 +8,8 @@ public:
 	World(const std::string& mapLT_in, const std::string& mapRT_in,
 		const std::string& mapLB_in, const std::string& mapRB_in);
 	void MoveCamera(bool left, bool right, bool up, bool down, float dt);
-	void RenderMap(Graphics& gfx) const;
+	void RenderPrepare();
+	void RenderMap(Graphics& gfx, const RectI& DrawRect) const;
 	void RenderText(Font& f, Graphics& gfx) const;
 private:
 	void LoadMap(Surface& map, const std::string& map_in);
@@ -28,4 +29,6 @@ private:
 	static constexpr Color tundra{ 183, 215, 239 };
 	static constexpr float cameraMoveSpeed = 1000.0f;
 	VecF cameraPos{ 0.0f, 0.0f };
+	int camRenderX;
+	int camRenderY;
 };
