@@ -264,7 +264,7 @@ RectI Graphics::GetGameRect()
 
 RectI Graphics::GetMenuRect()
 {
-	return { ScreenWidth - menuWidth, ScreenWidth, 0, ScreenHeight };
+	return { gameWidth, ScreenWidth, 0, ScreenHeight };
 }
 
 RectI Graphics::GetGameLTRect()
