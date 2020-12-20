@@ -39,15 +39,19 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
+	void DrawPrepare();
+	void DrawPartScreen(const RectI& screenPart);
 	/********************************/
 private:
 	MainWindow& wnd;
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	Stopwatch updateAndDrawWatch;
+	float updateAndDrawTime = 0.0f;
 	std::string loadTime;
-	Stopwatch stLoad;
 	Stopwatch frameTimer;
+	Stopwatch stLoad;
 	Font f;
 	World world;
 	/********************************/

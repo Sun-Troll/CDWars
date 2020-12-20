@@ -264,7 +264,27 @@ RectI Graphics::GetGameRect()
 
 RectI Graphics::GetMenuRect()
 {
-	return { ScreenWidth - menuWidth, ScreenWidth, 0, ScreenHeight };
+	return { gameWidth, ScreenWidth, 0, ScreenHeight };
+}
+
+RectI Graphics::GetGameLTRect()
+{
+	return { 0, gameMiddleX, 0, gameMiddleY };
+}
+
+RectI Graphics::GetGameRTRect()
+{
+	return { gameMiddleX, gameWidth, 0, gameMiddleY };
+}
+
+RectI Graphics::GetGameLBRect()
+{
+	return { 0, gameMiddleX, gameMiddleY, ScreenHeight };
+}
+
+RectI Graphics::GetGameRBRect()
+{
+	return { gameMiddleX, gameWidth, gameMiddleY, ScreenHeight };
 }
 
 void Graphics::EndFrame()

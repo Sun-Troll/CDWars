@@ -64,6 +64,7 @@ public:
 	void PutPixel(int x, int y, Color c);
 	void DrawRect(const RectI& rect, Color c);
 	void DrawCirc(const CircI& circ, Color c);
+	void DrawLine(VecF v0, VecF v1, Color c);
 	template<typename E>
 	void DrawSprite(int x, int y, const Surface& s, E effect)
 	{
@@ -133,9 +134,15 @@ public:
 	static constexpr int ScreenHeight = 1000;
 	static constexpr int menuWidth = 300;
 	static constexpr int gameWidth = ScreenWidth - menuWidth;
+	static constexpr int gameMiddleX = gameWidth / 2;
+	static constexpr int gameMiddleY = ScreenHeight / 2;
 	static RectI GetScreenRect();
 	static RectI GetGameRect();
 	static RectI GetMenuRect();
+	static RectI GetGameLTRect();
+	static RectI GetGameRTRect();
+	static RectI GetGameLBRect();
+	static RectI GetGameRBRect();
 };
 
 #include "SpriteEffect.h"
