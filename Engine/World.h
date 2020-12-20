@@ -8,6 +8,8 @@ public:
 	World(const std::string& mapLT_in, const std::string& mapRT_in,
 		const std::string& mapLB_in, const std::string& mapRB_in);
 	void MoveCamera(bool left, bool right, bool up, bool down, float dt);
+	void SetCamera(const VecF& pos);
+	void ClampCamera();
 	const VecF& GetCamPos() const;
 	void DrawPrepare();
 	void DrawMap(Graphics& gfx, const RectI& DrawRect) const;

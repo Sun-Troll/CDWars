@@ -30,7 +30,7 @@ Game::Game(MainWindow& wnd)
 	font("Sprites\\Fonts\\asciitext.bmp"),
 	world("Sprites\\Maps\\worldLT.bmp", "Sprites\\Maps\\worldRT.bmp",
 		"Sprites\\Maps\\worldLB.bmp", "Sprites\\Maps\\worldRB.bmp"),
-	menu("Sprites\\Menu\\menuBackground.bmp")
+	menu("Sprites\\Menu\\menuBackground.bmp", "Sprites\\Maps\\wMinimap.bmp")
 {
 	loadTime = "load time: " + std::to_string(stLoad.Duration());
 }
@@ -85,6 +85,21 @@ void Game::UpdateModel()
 	}
 
 	world.MoveCamera(left, right, up, down, ft);
+
+	if (wnd.mouse.LeftIsPressed())
+	{
+		const VecF mousePos = wnd.mouse.GetPos();
+		if (mousePos.x < float(Graphics::gameWidth))
+		{
+
+		}
+		else
+		{
+			menu.SetWorldCamPos(world, mousePos);
+		}
+	}
+
+	world.ClampCamera();
 }
 
 void Game::DrawPrepare()

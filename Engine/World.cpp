@@ -1,6 +1,7 @@
 #include "World.h"
 #include <thread>
 #include <functional>
+#include <algorithm>
 
 World::World(const std::string& mapLT_in, const std::string& mapRT_in,
 	const std::string& mapLB_in, const std::string& mapRB_in)
@@ -48,6 +49,17 @@ void World::MoveCamera(bool left, bool right, bool up, bool down, float dt)
 		++move.y;
 	}
 	cameraPos += move * cameraMoveSpeed * dt;
+}
+
+void World::SetCamera(const VecF& pos)
+{
+	cameraPos = pos;
+}
+
+void World::ClampCamera()
+{
+	cameraPos.x = std::max(std::min(cameraPos.x, worldRect.right), worldRect.left);
+	cameraPos.y = std::max(std::min(cameraPos.y, worldRect.bottom), worldRect.top);
 }
 
 const VecF& World::GetCamPos() const
