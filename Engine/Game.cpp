@@ -27,9 +27,10 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	f("Sprites\\Fonts\\asciitext.bmp"),
+	font("Sprites\\Fonts\\asciitext.bmp"),
 	world("Sprites\\Maps\\worldLT.bmp", "Sprites\\Maps\\worldRT.bmp",
-		"Sprites\\Maps\\worldLB.bmp", "Sprites\\Maps\\worldRB.bmp")
+		"Sprites\\Maps\\worldLB.bmp", "Sprites\\Maps\\worldRB.bmp"),
+	menu("Sprites\\Menu\\menuBackground.bmp")
 {
 	loadTime = "load time: " + std::to_string(stLoad.Duration());
 }
@@ -38,12 +39,15 @@ void Game::Go()
 {
 	gfx.BeginFrame();
 	updateAndDrawWatch.Duration();
+	std::thread t0(&Game::DrawMenu, std::ref(*this));
+	//DrawMenu();
 	DrawPrepare();
 	std::thread t1(&Game::DrawPartScreen, std::ref(*this), Graphics::GetGameLTRect());
 	std::thread t2(&Game::DrawPartScreen, std::ref(*this), Graphics::GetGameRTRect());
 	std::thread t3(&Game::DrawPartScreen, std::ref(*this), Graphics::GetGameLBRect());
 	std::thread t4(&Game::DrawPartScreen, std::ref(*this), Graphics::GetGameRBRect());
 	//DrawPartScreen(Graphics::GetGameRect());
+	t0.join();
 	UpdateModel();
 	t1.join();
 	t2.join();
@@ -85,18 +89,21 @@ void Game::UpdateModel()
 
 void Game::DrawPrepare()
 {
-	world.RenderPrepare();
+	world.DrawPrepare();
 }
 
 void Game::DrawPartScreen(const RectI& screenPart)
 {
-	world.RenderMap(gfx, screenPart);
+	world.DrawMap(gfx, screenPart);
+}
+
+void Game::DrawMenu()
+{
+	menu.DrawWorld(gfx, Graphics::GetMenuRect(), font, world);
 }
 
 void Game::ComposeFrame()
 {
-	//world.RenderMap(gfx, Graphics::GetGameRect());
-	world.RenderText(f, gfx);
-	f.DrawText(loadTime, { 0, 0 }, Colors::Black, Graphics::GetScreenRect(), gfx);
-	f.DrawText("frame time ms: " + std::to_string(updateAndDrawTime), { 0, 40 }, Colors::Black, Graphics::GetScreenRect(), gfx);
+	font.DrawText(loadTime, { 0, 0 }, Colors::Black, Graphics::GetScreenRect(), gfx);
+	font.DrawText("frame time ms: " + std::to_string(updateAndDrawTime), { 0, 40 }, Colors::Black, Graphics::GetScreenRect(), gfx);
 }

@@ -23,9 +23,8 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
-#include "World.h"
+#include "Menu.h"
 #include "Stopwatch.h"
-#include "Font.h"
 
 class Game
 {
@@ -41,6 +40,7 @@ private:
 	/*  User Functions              */
 	void DrawPrepare();
 	void DrawPartScreen(const RectI& screenPart);
+	void DrawMenu();
 	/********************************/
 private:
 	MainWindow& wnd;
@@ -52,7 +52,8 @@ private:
 	std::string loadTime;
 	Stopwatch frameTimer;
 	Stopwatch stLoad;
-	Font f;
+	Font font;
 	World world;
+	Menu menu;
 	/********************************/
 };
