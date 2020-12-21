@@ -11,6 +11,12 @@ public:
 		x(x_in),
 		y(y_in)
 	{}
+	template<typename S>
+	explicit Vec_(const Vec_<S>& vec)
+		:
+		x(T(vec.x)),
+		y(T(vec.y))
+	{}
 	Vec_ operator+(const Vec_& rhs) const
 	{
 		return Vec_{ x + rhs.x, y + rhs.y };

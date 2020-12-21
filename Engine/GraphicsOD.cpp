@@ -215,6 +215,26 @@ void Graphics::DrawLine(VecF v0, VecF v1, Color c)
 	}
 }
 
+void Graphics::DrawCross(const VecI& pos, int size, Color c)
+{
+	for (int x = pos.x - size; x < pos.x; ++x)
+	{
+		PutPixel(x, pos.y, c);
+	}
+	for (int x = pos.x + size; x > pos.x; --x)
+	{
+		PutPixel(x, pos.y, c);
+	}
+	for (int y = pos.y - size; y < pos.y; ++y)
+	{
+		PutPixel(pos.x, y, c);
+	}
+	for (int y = pos.y + size; y > pos.y; --y)
+	{
+		PutPixel(pos.x, y, c);
+	}
+}
+
 Color Graphics::GetPixel(int x, int y) const
 {
 	assert(x >= 0);
