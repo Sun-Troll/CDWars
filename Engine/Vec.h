@@ -17,6 +17,14 @@ public:
 		x(T(vec.x)),
 		y(T(vec.y))
 	{}
+	bool operator==(const Vec_& rhs) const
+	{
+		return x == rhs.x && y == rhs.y;
+	}
+	bool operator!=(const Vec_& rhs) const
+	{
+		return !(*this == rhs);
+	}
 	Vec_ operator+(const Vec_& rhs) const
 	{
 		return Vec_{ x + rhs.x, y + rhs.y };
