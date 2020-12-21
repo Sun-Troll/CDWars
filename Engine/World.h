@@ -8,9 +8,11 @@ public:
 	World(const std::string& mapLT_in, const std::string& mapRT_in,
 		const std::string& mapLB_in, const std::string& mapRB_in);
 	void MoveCamera(bool left, bool right, bool up, bool down, float dt);
-	void RenderPrepare();
-	void RenderMap(Graphics& gfx, const RectI& DrawRect) const;
-	void RenderText(Font& f, Graphics& gfx) const;
+	void SetCamera(const VecF& pos);
+	void ClampCamera();
+	const VecF& GetCamPos() const;
+	void DrawPrepare();
+	void DrawMap(Graphics& gfx, const RectI& DrawRect) const;
 private:
 	void LoadMap(Surface& map, const std::string& map_in);
 private:

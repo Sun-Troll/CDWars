@@ -1,6 +1,7 @@
 #include "World.h"
 #include <thread>
 #include <functional>
+#include <algorithm>
 
 World::World(const std::string& mapLT_in, const std::string& mapRT_in,
 	const std::string& mapLB_in, const std::string& mapRB_in)
@@ -50,25 +51,34 @@ void World::MoveCamera(bool left, bool right, bool up, bool down, float dt)
 	cameraPos += move * cameraMoveSpeed * dt;
 }
 
-void World::RenderPrepare()
+void World::SetCamera(const VecF& pos)
+{
+	cameraPos = pos;
+}
+
+void World::ClampCamera()
+{
+	cameraPos.x = std::max(std::min(cameraPos.x, worldRect.right), worldRect.left);
+	cameraPos.y = std::max(std::min(cameraPos.y, worldRect.bottom), worldRect.top);
+}
+
+const VecF& World::GetCamPos() const
+{
+	return cameraPos;
+}
+
+void World::DrawPrepare()
 {
 	camRenderX = int(cameraPos.x) - Graphics::gameWidth / 2;
 	camRenderY = int(cameraPos.y) - Graphics::ScreenHeight / 2;
 }
 
-void World::RenderMap(Graphics& gfx, const RectI& DrawRect) const
+void World::DrawMap(Graphics& gfx, const RectI& DrawRect) const
 {
 	gfx.DrawSprite(left - camRenderX, top - camRenderY, DrawRect, mapLT, SpriteEffect::Copy{});
 	gfx.DrawSprite(0 - camRenderX, top - camRenderY, DrawRect, mapRT, SpriteEffect::Copy{});
 	gfx.DrawSprite(left - camRenderX, 0 - camRenderY, DrawRect, mapLB, SpriteEffect::Copy{});
 	gfx.DrawSprite(0 - camRenderX, 0 - camRenderY, DrawRect, mapRB, SpriteEffect::Copy{});
-}
-
-void World::RenderText(Font& f, Graphics& gfx) const
-{
-	const std::string camPosStr = "Camera Pos:\n" + std::to_string(cameraPos.x) + '\n' + std::to_string(cameraPos.y);
-	f.DrawText(camPosStr, { Graphics::ScreenWidth - Graphics::menuWidth + 8, 890 },
-		Colors::LightGray, Graphics::GetMenuRect(), gfx);
 }
 
 void World::LoadMap(Surface& map, const std::string& map_in)

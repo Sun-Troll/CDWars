@@ -25,6 +25,10 @@ public:
 	{
 		return left < rhs.right && right > rhs.left && top < rhs.bottom && bottom > rhs.top;
 	}
+	bool ContainsPoint(const Vec_<T>& rhs) const
+	{
+		return left <= rhs.x && right > rhs.x && top <= rhs.y && bottom > rhs.y;
+	}
 	T GetWidth() const
 	{
 		return right - left;

@@ -65,6 +65,7 @@ public:
 	void DrawRect(const RectI& rect, Color c);
 	void DrawCirc(const CircI& circ, Color c);
 	void DrawLine(VecF v0, VecF v1, Color c);
+	void DrawCross(const VecI& pos, int size, Color c);
 	template<typename E>
 	void DrawSprite(int x, int y, const Surface& s, E effect)
 	{
