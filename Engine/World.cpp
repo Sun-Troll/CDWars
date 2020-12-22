@@ -4,7 +4,14 @@
 #include <algorithm>
 
 World::World(const std::string& mapLT_in, const std::string& mapRT_in,
-	const std::string& mapLB_in, const std::string& mapRB_in)
+	const std::string& mapLB_in, const std::string& mapRB_in,
+	const std::string& armyPlayer_in, const std::string& armyEnemy_in,
+	const std::string& armyTarget_in)
+	:
+	armyPlayer(armyPlayer_in),
+	armyEnemy(armyEnemy_in),
+	armyTarget(armyTarget_in),
+	playerArmyDrawPos(VecI(player.GetPos()) - VecI{ camRenderX, camRenderY })
 {
 	//test code
 	mapLT = Surface{ int(worldRect.GetWidth() / 2), int(worldRect.GetHeight() / 2), forrest };
@@ -27,6 +34,13 @@ World::World(const std::string& mapLT_in, const std::string& mapRT_in,
 	assert(worldRect.GetHeight() / 2 == mapLB.GetHeight());
 	assert(worldRect.GetWidth() / 2 == mapRB.GetWidth());
 	assert(worldRect.GetHeight() / 2 == mapRB.GetHeight());
+
+	assert(armyPlayer.GetWidth() / 2 == halfArmSprite.x);
+	assert(armyPlayer.GetHeight() / 2 == halfArmSprite.y);
+	assert(armyEnemy.GetWidth() / 2 == halfArmSprite.x);
+	assert(armyEnemy.GetHeight() / 2 == halfArmSprite.y);
+	assert(armyTarget.GetWidth() / 2 == halfArmSprite.x);
+	assert(armyTarget.GetHeight() / 2 == halfArmSprite.y);
 }
 
 void World::MoveCamera(bool left, bool right, bool up, bool down, float dt)
@@ -71,14 +85,22 @@ void World::DrawPrepare()
 {
 	camRenderX = int(cameraPos.x) - Graphics::gameWidth / 2;
 	camRenderY = int(cameraPos.y) - Graphics::ScreenHeight / 2;
+	const VecI offset = VecI{ camRenderX, camRenderY } + halfArmSprite;
+	playerArmyDrawPos = VecI(player.GetPos()) - offset;
 }
 
-void World::DrawMap(Graphics& gfx, const RectI& DrawRect) const
+void World::DrawMap(Graphics& gfx, const RectI& drawRect) const
 {
-	gfx.DrawSprite(left - camRenderX, top - camRenderY, DrawRect, mapLT, SpriteEffect::Copy{});
-	gfx.DrawSprite(0 - camRenderX, top - camRenderY, DrawRect, mapRT, SpriteEffect::Copy{});
-	gfx.DrawSprite(left - camRenderX, 0 - camRenderY, DrawRect, mapLB, SpriteEffect::Copy{});
-	gfx.DrawSprite(0 - camRenderX, 0 - camRenderY, DrawRect, mapRB, SpriteEffect::Copy{});
+	gfx.DrawSprite(left - camRenderX, top - camRenderY, drawRect, mapLT, SpriteEffect::Copy{});
+	gfx.DrawSprite(0 - camRenderX, top - camRenderY, drawRect, mapRT, SpriteEffect::Copy{});
+	gfx.DrawSprite(left - camRenderX, 0 - camRenderY, drawRect, mapLB, SpriteEffect::Copy{});
+	gfx.DrawSprite(0 - camRenderX, 0 - camRenderY, drawRect, mapRB, SpriteEffect::Copy{});
+}
+
+void World::DrawArmies(Graphics& gfx, const RectI& drawRect) const
+{
+	gfx.DrawSprite(playerArmyDrawPos.x, playerArmyDrawPos.y,
+		drawRect, armyPlayer, SpriteEffect::Chroma{ Colors::White });
 }
 
 void World::LoadMap(Surface& map, const std::string& map_in)

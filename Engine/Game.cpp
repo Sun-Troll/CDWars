@@ -29,7 +29,9 @@ Game::Game(MainWindow& wnd)
 	gfx(wnd),
 	font("Sprites\\Fonts\\asciitext.bmp"),
 	world("Sprites\\Maps\\worldLT.bmp", "Sprites\\Maps\\worldRT.bmp",
-		"Sprites\\Maps\\worldLB.bmp", "Sprites\\Maps\\worldRB.bmp"),
+		"Sprites\\Maps\\worldLB.bmp", "Sprites\\Maps\\worldRB.bmp",
+		"Sprites\\Armies\\armyPlayer.bmp", "Sprites\\Armies\\armyEnemy.bmp",
+		"Sprites\\Armies\\armyTarget.bmp"),
 	menu("Sprites\\Menu\\menuBackground.bmp", "Sprites\\Maps\\wMinimap.bmp")
 {
 	loadTime = "load time: " + std::to_string(stLoad.Duration());
@@ -110,6 +112,7 @@ void Game::DrawPrepare()
 void Game::DrawPartScreen(const RectI& screenPart)
 {
 	world.DrawMap(gfx, screenPart);
+	world.DrawArmies(gfx, screenPart);
 }
 
 void Game::DrawMenu()
