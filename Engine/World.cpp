@@ -81,6 +81,11 @@ const VecF& World::GetCamPos() const
 	return cameraPos;
 }
 
+const VecF& World::GetPlayerPos() const
+{
+	return player.GetPos();
+}
+
 void World::DrawPrepare()
 {
 	camRenderX = int(cameraPos.x) - Graphics::gameWidth / 2;

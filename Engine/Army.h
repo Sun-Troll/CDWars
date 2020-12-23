@@ -11,6 +11,7 @@ public:
 		Sneak
 	};
 public:
+	Army(State st_in, const VecF& pos);
 	void Move(float dt);
 	void SetTarget(const VecF& trg);
 	const VecF& GetPos() const;
@@ -23,8 +24,8 @@ private:
 	static constexpr float sMarch = 100.0f;
 	static constexpr float sScout = sMarch * 0.5f;
 	static constexpr float sSneak = sMarch * 0.5f;
-	State st = State::March;
-	CircF hitbox{ {0.0f, 8000.0f}, colRad };
+	State st;
+	CircF hitbox;
 	CircF detection{ hitbox.center, dMarch };
 	VecF target = hitbox.center;
 	float speed = sMarch;

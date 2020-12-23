@@ -1,5 +1,12 @@
 #include "Army.h"
 
+Army::Army(State st_in, const VecF& pos)
+	:
+	st(st_in),
+	hitbox(pos, colRad)
+{
+}
+
 void Army::Move(float dt)
 {
 	if (hitbox.center != target)
