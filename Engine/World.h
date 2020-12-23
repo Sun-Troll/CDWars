@@ -23,6 +23,7 @@ public:
 	void DrawPrepare();
 	void DrawMap(Graphics& gfx, const RectI& drawRect) const;
 	void DrawArmies(Graphics& gfx, const RectI& drawRect) const;
+	void DrawHeading(Graphics& gfx) const;
 private:
 	void LoadMap(Surface& map, const std::string& map_in);
 private:
@@ -46,7 +47,7 @@ private:
 	VecF cameraPos{ 0.0f, 0.0f };
 	int camRenderX = int(cameraPos.x) - Graphics::gameWidth / 2;
 	int camRenderY = int(cameraPos.y) - Graphics::ScreenHeight / 2;
-	static constexpr VecI halfArmSprite{ 16, 16 };
+	static constexpr VecI halfArmySprite{ 16, 16 };
 	Army player{ Army::State::March, { -8000.0f, 0.0f } };
 	VecI playerArmyDrawPos;
 	VecI playerTargetDrawPos;

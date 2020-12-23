@@ -55,6 +55,7 @@ void Game::Go()
 	t2.join();
 	t3.join();
 	t4.join();
+	DrawFinish();
 	ComposeFrame();
 	updateAndDrawTime = updateAndDrawWatch.Duration() * 1000.0f;
 	gfx.EndFrame();
@@ -118,6 +119,11 @@ void Game::DrawPartScreen(const RectI& screenPart)
 void Game::DrawMenu()
 {
 	menu.DrawWorld(gfx, Graphics::GetMenuRect(), font, world);
+}
+
+void Game::DrawFinish()
+{
+	world.DrawHeading(gfx);
 }
 
 void Game::ComposeFrame()

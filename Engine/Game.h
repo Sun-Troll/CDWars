@@ -41,6 +41,7 @@ private:
 	void DrawPrepare();
 	void DrawPartScreen(const RectI& screenPart);
 	void DrawMenu();
+	void DrawFinish();
 	/********************************/
 private:
 	MainWindow& wnd;
