@@ -93,7 +93,7 @@ void Game::UpdateModel()
 		const VecF mousePos = wnd.mouse.GetPos();
 		if (mousePos.x < float(Graphics::gameWidth))
 		{
-
+			world.PlayerSetTarget(mousePos);
 		}
 		else
 		{

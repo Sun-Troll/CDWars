@@ -28,4 +28,5 @@ void Menu::DrawWorld(Graphics& gfx, const RectI& drawRect, const Font& f, const 
 	gfx.DrawSprite(Graphics::gameWidth + leftPadding, minimapTop, drawRect, wMinimap, SpriteEffect::Copy{});
 	gfx.DrawCross(VecI(w.GetCamPos() / mapToMinimap + mapCorOffset), 6, Colors::Black);
 	gfx.DrawCross(VecI(w.GetPlayerPos() / mapToMinimap + mapCorOffset), 5, Colors::Blue);
+	gfx.DrawCross(VecI(w.GetPlayerTarget() / mapToMinimap + mapCorOffset), 4, Colors::White);
 }

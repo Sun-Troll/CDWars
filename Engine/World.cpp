@@ -11,7 +11,8 @@ World::World(const std::string& mapLT_in, const std::string& mapRT_in,
 	armyPlayer(armyPlayer_in),
 	armyEnemy(armyEnemy_in),
 	armyTarget(armyTarget_in),
-	playerArmyDrawPos(VecI(player.GetPos()) - VecI{ camRenderX, camRenderY })
+	playerArmyDrawPos(VecI(player.GetPos()) - VecI{ camRenderX, camRenderY }),
+	playerTargetDrawPos(VecI(player.GetTarget()) - VecI{ camRenderX, camRenderY })
 {
 	//test code
 	mapLT = Surface{ int(worldRect.GetWidth() / 2), int(worldRect.GetHeight() / 2), forrest };
@@ -81,9 +82,22 @@ const VecF& World::GetCamPos() const
 	return cameraPos;
 }
 
+void World::PlayerSetTarget(VecF target)
+{
+	target += cameraPos;
+	target.x = std::max(std::min(target.x - Graphics::gameWidth / 2, worldRect.right), worldRect.left);
+	target.y = std::max(std::min(target.y - Graphics::ScreenHeight / 2, worldRect.bottom), worldRect.top);
+	player.SetTarget(target);
+}
+
 const VecF& World::GetPlayerPos() const
 {
 	return player.GetPos();
+}
+
+const VecF& World::GetPlayerTarget() const
+{
+	return player.GetTarget();
 }
 
 void World::DrawPrepare()
@@ -92,6 +106,7 @@ void World::DrawPrepare()
 	camRenderY = int(cameraPos.y) - Graphics::ScreenHeight / 2;
 	const VecI offset = VecI{ camRenderX, camRenderY } + halfArmSprite;
 	playerArmyDrawPos = VecI(player.GetPos()) - offset;
+	playerTargetDrawPos = VecI(player.GetTarget()) - offset;
 }
 
 void World::DrawMap(Graphics& gfx, const RectI& drawRect) const
@@ -106,6 +121,8 @@ void World::DrawArmies(Graphics& gfx, const RectI& drawRect) const
 {
 	gfx.DrawSprite(playerArmyDrawPos.x, playerArmyDrawPos.y,
 		drawRect, armyPlayer, SpriteEffect::Chroma{ Colors::White });
+	gfx.DrawSprite(playerTargetDrawPos.x, playerTargetDrawPos.y,
+		drawRect, armyTarget, SpriteEffect::Chroma{ Colors::White });
 }
 
 void World::LoadMap(Surface& map, const std::string& map_in)

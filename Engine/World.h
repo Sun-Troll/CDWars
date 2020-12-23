@@ -16,7 +16,9 @@ public:
 	void ClampCamera();
 	const VecF& GetCamPos() const;
 	//armies
+	void PlayerSetTarget(VecF target);
 	const VecF& GetPlayerPos() const;
+	const VecF& GetPlayerTarget() const;
 	//draw
 	void DrawPrepare();
 	void DrawMap(Graphics& gfx, const RectI& drawRect) const;
@@ -47,4 +49,5 @@ private:
 	static constexpr VecI halfArmSprite{ 16, 16 };
 	Army player{ Army::State::March, { -8000.0f, 0.0f } };
 	VecI playerArmyDrawPos;
+	VecI playerTargetDrawPos;
 };
