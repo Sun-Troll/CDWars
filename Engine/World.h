@@ -25,6 +25,7 @@ public:
 	void DrawMap(Graphics& gfx, const RectI& drawRect) const;
 	void DrawArmies(Graphics& gfx, const RectI& drawRect) const;
 	void DrawHeading(Graphics& gfx) const;
+	void DrawDetect(Graphics& gfx) const;
 private:
 	void LoadMap(Surface& map, const std::string& map_in);
 private:
@@ -52,4 +53,5 @@ private:
 	Army player{ Army::State::March, { -8000.0f, 0.0f } };
 	VecI playerArmyDrawPos;
 	VecI playerTargetDrawPos;
+	int playerDetectRad;
 };

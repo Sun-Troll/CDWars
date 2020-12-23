@@ -126,6 +126,7 @@ void Game::DrawMenu()
 void Game::DrawFinish()
 {
 	world.DrawHeading(gfx);
+	world.DrawDetect(gfx);
 }
 
 void Game::ComposeFrame()

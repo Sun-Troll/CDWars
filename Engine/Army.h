@@ -16,6 +16,7 @@ public:
 	void SetTarget(const VecF& trg);
 	const VecF& GetPos() const;
 	const VecF& GetTarget() const;
+	float GetDetectRad() const;
 private:
 	static constexpr float colRad = 16.0f;
 	static constexpr float dMarch = 1024.0f;
@@ -28,5 +29,6 @@ private:
 	CircF hitbox;
 	CircF detection{ hitbox.center, dMarch };
 	VecF target = hitbox.center;
+	float detectRad = dMarch;
 	float speed = sMarch;
 };

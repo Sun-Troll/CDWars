@@ -37,3 +37,8 @@ const VecF& Army::GetTarget() const
 {
 	return target;
 }
+
+float Army::GetDetectRad() const
+{
+	return detectRad;
+}

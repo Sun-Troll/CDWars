@@ -12,7 +12,8 @@ World::World(const std::string& mapLT_in, const std::string& mapRT_in,
 	armyEnemy(armyEnemy_in),
 	armyTarget(armyTarget_in),
 	playerArmyDrawPos(VecI(player.GetPos()) - VecI{ camRenderX, camRenderY }),
-	playerTargetDrawPos(VecI(player.GetTarget()) - VecI{ camRenderX, camRenderY })
+	playerTargetDrawPos(VecI(player.GetTarget()) - VecI{ camRenderX, camRenderY }),
+	playerDetectRad(int(player.GetDetectRad()))
 {
 	//test code
 	mapLT = Surface{ int(worldRect.GetWidth() / 2), int(worldRect.GetHeight() / 2), forrest };
@@ -133,6 +134,11 @@ void World::DrawArmies(Graphics& gfx, const RectI& drawRect) const
 void World::DrawHeading(Graphics& gfx) const
 {
 	gfx.DrawLine(VecF(playerArmyDrawPos + halfArmySprite), VecF(playerTargetDrawPos + halfArmySprite), Colors::Blue);
+}
+
+void World::DrawDetect(Graphics & gfx) const
+{
+	gfx.DrawCirc({ playerArmyDrawPos + halfArmySprite, playerDetectRad }, Colors::Blue);
 }
 
 void World::LoadMap(Surface& map, const std::string& map_in)
