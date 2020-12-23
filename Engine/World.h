@@ -17,6 +17,7 @@ public:
 	const VecF& GetCamPos() const;
 	//armies
 	void PlayerSetTarget(VecF target);
+	void ArmiesMove(float dt);
 	const VecF& GetPlayerPos() const;
 	const VecF& GetPlayerTarget() const;
 	//draw

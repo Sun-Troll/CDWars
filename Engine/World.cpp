@@ -90,6 +90,11 @@ void World::PlayerSetTarget(VecF target)
 	player.SetTarget(target);
 }
 
+void World::ArmiesMove(float dt)
+{
+	player.Move(dt);
+}
+
 const VecF& World::GetPlayerPos() const
 {
 	return player.GetPos();

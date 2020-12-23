@@ -63,7 +63,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	float ft = frameTimer.Duration();
+	const float ft = frameTimer.Duration();
 
 	bool left = false;
 	bool right = false;
@@ -103,6 +103,8 @@ void Game::UpdateModel()
 	}
 
 	world.ClampCamera();
+
+	world.ArmiesMove(ft);
 }
 
 void Game::DrawPrepare()
