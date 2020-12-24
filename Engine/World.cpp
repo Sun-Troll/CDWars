@@ -102,6 +102,28 @@ void World::PlayerSetState(Army::State state)
 void World::ArmiesMove(float dt)
 {
 	player.Move(dt);
+	for (Army& a : enemies)
+	{
+		a.Move(dt);
+	}
+}
+
+void World::EnemiesSetTarget(std::mt19937& rng)
+{
+	for (Army& a : enemies)
+	{
+		if (a.Detect(player))
+		{
+			a.SetTarget(player.GetPos());
+		}
+		else
+		{
+			if (a.GetPos() == a.GetTarget())
+			{
+				a.SetTarget({ float(posDist(rng)), float(posDist(rng)) });
+			}
+		}
+	}
 }
 
 const VecF& World::GetPlayerPos() const

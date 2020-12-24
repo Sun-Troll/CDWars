@@ -25,7 +25,6 @@
 #include "Graphics.h"
 #include "Menu.h"
 #include "Stopwatch.h"
-#include <random>
 
 class Game
 {

@@ -127,6 +127,7 @@ void Game::UpdateModel()
 
 	world.ClampCamera();
 
+	world.EnemiesSetTarget(rngMain);
 	world.ArmiesMove(ft);
 }
 

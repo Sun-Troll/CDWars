@@ -2,6 +2,7 @@
 #include "Graphics.h"
 #include "Font.h"
 #include "Army.h"
+#include <random>
 
 class World
 {
@@ -19,6 +20,7 @@ public:
 	void PlayerSetTarget(VecF target);
 	void PlayerSetState(Army::State state);
 	void ArmiesMove(float dt);
+	void EnemiesSetTarget(std::mt19937& rng);
 	const VecF& GetPlayerPos() const;
 	const VecF& GetPlayerTarget() const;
 	const Army::State GetPlayerState() const;
@@ -58,4 +60,5 @@ private:
 	int playerDetectRad;
 	std::vector<Army> enemies;
 	std::vector<VecI> enemiesDraw;
+	const std::uniform_int_distribution<int> posDist{ -8190, 8190 };
 };
