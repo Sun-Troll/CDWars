@@ -20,12 +20,31 @@ void Army::Move(float dt)
 		{
 			hitbox.center += move;
 		}
+		detection.center = hitbox.center;
 	}
 }
 
 void Army::SetTarget(const VecF& trg)
 {
 	target = trg;
+}
+
+void Army::SwitchState(bool changed, State stNew)
+{
+	if (changed)
+	{
+		switch (stNew)
+		{
+		case Army::State::March:
+			break;
+		case Army::State::Scout:
+			break;
+		case Army::State::Sneak:
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 const VecF& Army::GetPos() const
@@ -40,5 +59,5 @@ const VecF& Army::GetTarget() const
 
 float Army::GetDetectRad() const
 {
-	return detectRad;
+	return detection.radius;
 }

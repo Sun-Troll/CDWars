@@ -14,6 +14,7 @@ public:
 	Army(State st_in, const VecF& pos);
 	void Move(float dt);
 	void SetTarget(const VecF& trg);
+	void SwitchState(bool changed, State stNew);
 	const VecF& GetPos() const;
 	const VecF& GetTarget() const;
 	float GetDetectRad() const;
@@ -25,10 +26,13 @@ private:
 	static constexpr float sMarch = 100.0f;
 	static constexpr float sScout = sMarch * 0.5f;
 	static constexpr float sSneak = sMarch * 0.5f;
+	static constexpr float hMarch = 1.0f;
+	static constexpr float hScout = 1.0f;
+	static constexpr float hSneak = 0.5f;
 	State st;
 	CircF hitbox;
 	CircF detection{ hitbox.center, dMarch };
 	VecF target = hitbox.center;
-	float detectRad = dMarch;
 	float speed = sMarch;
+	float hide = hMarch;
 };

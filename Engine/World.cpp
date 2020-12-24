@@ -138,7 +138,9 @@ void World::DrawHeading(Graphics& gfx) const
 
 void World::DrawDetect(Graphics & gfx) const
 {
-	gfx.DrawCirc({ playerArmyDrawPos + halfArmySprite, playerDetectRad }, Colors::Blue);
+	const VecI detectCenter = playerArmyDrawPos + halfArmySprite;
+	gfx.DrawCirc({ detectCenter, playerDetectRad }, Colors::Blue);
+	gfx.DrawCirc({ detectCenter, playerDetectRad / 2 }, Colors::Blue);
 }
 
 void World::LoadMap(Surface& map, const std::string& map_in)
