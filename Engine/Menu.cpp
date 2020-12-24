@@ -23,7 +23,30 @@ void Menu::SetWorldCamPos(World& w, const VecF& pos) const
 void Menu::DrawWorld(Graphics& gfx, const RectI& drawRect, const Font& f, const World& w) const
 {
 	gfx.DrawSprite(Graphics::gameWidth, 0, drawRect, background, SpriteEffect::Copy{});
-	const std::string camPosStr = "Camera Pos:\n" + std::to_string(w.GetCamPos().x) + '\n' + std::to_string(w.GetCamPos().y);
+	std::string playerState = "State: ";
+	switch (w.GetPlayerState())
+	{
+	case Army::State::March:
+		playerState += "March";
+		break;
+	case Army::State::Scout:
+		playerState += "Scout";
+		break;
+	case Army::State::Sneak:
+		playerState += "Sneak";
+		break;
+	default:
+		break;
+	}
+	const std::string playerPos = "Army position:\n" + std::to_string(w.GetPlayerPos().x)
+		+ '\n' + std::to_string(w.GetPlayerPos().y);
+	const std::string targetPos = "Target position:\n" + std::to_string(w.GetPlayerTarget().x)
+		+ '\n' + std::to_string(w.GetPlayerTarget().y);
+	const std::string camPosStr = "Camera position:\n" + std::to_string(w.GetCamPos().x)
+		+ '\n' + std::to_string(w.GetCamPos().y);
+	f.DrawText(playerState, { Graphics::gameWidth + leftPadding, 330 }, cText, drawRect, gfx);
+	f.DrawText(playerPos, { Graphics::gameWidth + leftPadding, 370 }, cText, drawRect, gfx);
+	f.DrawText(targetPos, { Graphics::gameWidth + leftPadding, 480 }, cText, drawRect, gfx);
 	f.DrawText(camPosStr, { Graphics::gameWidth + leftPadding, 590 }, cText, drawRect, gfx);
 	gfx.DrawSprite(Graphics::gameWidth + leftPadding, minimapTop, drawRect, wMinimap, SpriteEffect::Copy{});
 	gfx.DrawCross(VecI(w.GetCamPos() / mapToMinimap + mapCorOffset), 6, Colors::Black);

@@ -89,6 +89,28 @@ void Game::UpdateModel()
 
 	world.MoveCamera(left, right, up, down, ft);
 
+	Army::State state = Army::State::March;
+
+	while (!wnd.kbd.KeyIsEmpty())
+	{
+		const Keyboard::Event e = wnd.kbd.ReadKey();
+		if (e.IsRelease())
+		{
+			if (e.GetCode() == '1' || e.GetCode() == '2' || e.GetCode() == '3')
+			{
+				if (e.GetCode() == '2')
+				{
+					state = Army::State::Scout;
+				}
+				else if (e.GetCode() == '3')
+				{
+					state = Army::State::Sneak;
+				}
+				world.PlayerSetState(state);
+			}
+		}
+	}
+
 	if (wnd.mouse.LeftIsPressed())
 	{
 		const VecF mousePos = wnd.mouse.GetPos();

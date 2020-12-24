@@ -91,6 +91,11 @@ void World::PlayerSetTarget(VecF target)
 	player.SetTarget(target);
 }
 
+void World::PlayerSetState(Army::State state)
+{
+	player.SwitchState(state);
+}
+
 void World::ArmiesMove(float dt)
 {
 	player.Move(dt);
@@ -106,6 +111,11 @@ const VecF& World::GetPlayerTarget() const
 	return player.GetTarget();
 }
 
+const Army::State World::GetPlayerState() const
+{
+	return player.GetState();
+}
+
 void World::DrawPrepare()
 {
 	camRenderX = int(cameraPos.x) - Graphics::gameWidth / 2;
@@ -113,6 +123,7 @@ void World::DrawPrepare()
 	const VecI offset = VecI{ camRenderX, camRenderY } + halfArmySprite;
 	playerArmyDrawPos = VecI(player.GetPos()) - offset;
 	playerTargetDrawPos = VecI(player.GetTarget()) - offset;
+	playerDetectRad = int(player.GetDetectRad());
 }
 
 void World::DrawMap(Graphics& gfx, const RectI& drawRect) const

@@ -17,9 +17,11 @@ public:
 	const VecF& GetCamPos() const;
 	//armies
 	void PlayerSetTarget(VecF target);
+	void PlayerSetState(Army::State state);
 	void ArmiesMove(float dt);
 	const VecF& GetPlayerPos() const;
 	const VecF& GetPlayerTarget() const;
+	const Army::State GetPlayerState() const;
 	//draw
 	void DrawPrepare();
 	void DrawMap(Graphics& gfx, const RectI& drawRect) const;

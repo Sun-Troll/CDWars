@@ -5,6 +5,7 @@ Army::Army(State st_in, const VecF& pos)
 	st(st_in),
 	hitbox(pos, colRad)
 {
+	SwitchState(st_in);
 }
 
 void Army::Move(float dt)
@@ -29,21 +30,30 @@ void Army::SetTarget(const VecF& trg)
 	target = trg;
 }
 
-void Army::SwitchState(bool changed, State stNew)
+void Army::SwitchState(State stNew)
 {
-	if (changed)
+	switch (stNew)
 	{
-		switch (stNew)
-		{
-		case Army::State::March:
-			break;
-		case Army::State::Scout:
-			break;
-		case Army::State::Sneak:
-			break;
-		default:
-			break;
-		}
+	case State::March:
+		detection.radius = dMarch;
+		speed = sMarch;
+		hide = hMarch;
+		st = State::March;
+		break;
+	case State::Scout:
+		detection.radius = dScout;
+		speed = sScout;
+		hide = hScout;
+		st = State::Scout;
+		break;
+	case State::Sneak:
+		detection.radius = dSneak;
+		speed = sSneak;
+		hide = hSneak;
+		st = State::Sneak;
+		break;
+	default:
+		break;
 	}
 }
 
@@ -60,4 +70,9 @@ const VecF& Army::GetTarget() const
 float Army::GetDetectRad() const
 {
 	return detection.radius;
+}
+
+Army::State Army::GetState() const
+{
+	return st;
 }
