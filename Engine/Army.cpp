@@ -25,6 +25,11 @@ void Army::Move(float dt)
 	}
 }
 
+bool Army::Detect(const Army& enemy) const
+{
+	return detection.Coliding(enemy.hitbox);
+}
+
 void Army::SetTarget(const VecF& trg)
 {
 	target = trg;

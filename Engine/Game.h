@@ -25,6 +25,7 @@
 #include "Graphics.h"
 #include "Menu.h"
 #include "Stopwatch.h"
+#include <random>
 
 class Game
 {
@@ -54,6 +55,8 @@ private:
 	Stopwatch frameTimer;
 	Stopwatch stLoad;
 	Font font;
+	std::random_device rd;
+	std::mt19937 rngMain;
 	World world;
 	Menu menu;
 	/********************************/

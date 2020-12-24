@@ -28,6 +28,7 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	font("Sprites\\Fonts\\asciitext.bmp"),
+	rngMain(rd()),
 	world("Sprites\\Maps\\worldLT.bmp", "Sprites\\Maps\\worldRT.bmp",
 		"Sprites\\Maps\\worldLB.bmp", "Sprites\\Maps\\worldRB.bmp",
 		"Sprites\\Armies\\armyPlayer.bmp", "Sprites\\Armies\\armyEnemy.bmp",

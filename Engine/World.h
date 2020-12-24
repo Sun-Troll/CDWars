@@ -56,4 +56,6 @@ private:
 	VecI playerArmyDrawPos;
 	VecI playerTargetDrawPos;
 	int playerDetectRad;
+	std::vector<Army> enemies;
+	std::vector<VecI> enemiesDraw;
 };

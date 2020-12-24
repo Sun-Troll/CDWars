@@ -43,6 +43,9 @@ World::World(const std::string& mapLT_in, const std::string& mapRT_in,
 	assert(armyEnemy.GetHeight() / 2 == halfArmySprite.y);
 	assert(armyTarget.GetWidth() / 2 == halfArmySprite.x);
 	assert(armyTarget.GetHeight() / 2 == halfArmySprite.y);
+
+	enemies.emplace_back(Army{ Army::State::March, { -7000.0f, 800.0f } });
+	enemies.emplace_back(Army{ Army::State::March, { -7500.0f, 400.0f } });
 }
 
 void World::MoveCamera(bool left, bool right, bool up, bool down, float dt)
@@ -124,6 +127,14 @@ void World::DrawPrepare()
 	playerArmyDrawPos = VecI(player.GetPos()) - offset;
 	playerTargetDrawPos = VecI(player.GetTarget()) - offset;
 	playerDetectRad = int(player.GetDetectRad());
+	enemiesDraw.clear();
+	for (const Army& a : enemies)
+	{
+		if (player.Detect(a))
+		{
+			enemiesDraw.emplace_back(VecI(a.GetPos()) - offset);
+		}
+	}
 }
 
 void World::DrawMap(Graphics& gfx, const RectI& drawRect) const
@@ -140,6 +151,10 @@ void World::DrawArmies(Graphics& gfx, const RectI& drawRect) const
 		drawRect, armyPlayer, SpriteEffect::Chroma{ Colors::White });
 	gfx.DrawSprite(playerTargetDrawPos.x, playerTargetDrawPos.y,
 		drawRect, armyTarget, SpriteEffect::Chroma{ Colors::White });
+	for (const VecI& p : enemiesDraw)
+	{
+		gfx.DrawSprite(p.x, p.y, drawRect, armyEnemy, SpriteEffect::Chroma{ Colors::White });
+	}
 }
 
 void World::DrawHeading(Graphics& gfx) const

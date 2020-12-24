@@ -13,6 +13,7 @@ public:
 public:
 	Army(State st_in, const VecF& pos);
 	void Move(float dt);
+	bool Detect(const Army& enemy) const;
 	void SetTarget(const VecF& trg);
 	void SwitchState(State stNew);
 	const VecF& GetPos() const;
