@@ -46,7 +46,7 @@ void Graphics::DrawCirc(const CircI& circ, Color c)
 	const int right = circ.center.x + circ.radius - 1;
 	const int top = circ.center.y - circ.radius + 1;
 	const int bottom = circ.center.y + circ.radius - 1;
-	if (left < ScreenWidth && right >= 0 && top < ScreenHeight && bottom >= 0)
+	if (left < gameWidth && right >= 0 && top < ScreenHeight && bottom >= 0)
 	{
 		if (circ.center.y >= 0 && circ.center.y < ScreenHeight)
 		{
@@ -54,12 +54,12 @@ void Graphics::DrawCirc(const CircI& circ, Color c)
 			{
 				PutPixel(left, circ.center.y, c);
 			}
-			if (right < ScreenWidth)
+			if (right < gameWidth)
 			{
 				PutPixel(right, circ.center.y, c);
 			}
 		}
-		if (circ.center.x >= 0 && circ.center.x < ScreenWidth)
+		if (circ.center.x >= 0 && circ.center.x < gameWidth)
 		{
 			if (top >= 0)
 			{
@@ -79,7 +79,7 @@ void Graphics::DrawCirc(const CircI& circ, Color c)
 			const int right = circ.center.x + x;
 			const int top = circ.center.y - y;
 			const int bottom = circ.center.y + y;
-			if (left >= 0 && left < ScreenWidth)
+			if (left >= 0 && left < gameWidth)
 			{
 				if (top >= 0 && top < ScreenHeight)
 				{
@@ -90,7 +90,7 @@ void Graphics::DrawCirc(const CircI& circ, Color c)
 					PutPixel(left, bottom, c);
 				}
 			}
-			if (right >= 0 && right < ScreenWidth)
+			if (right >= 0 && right < gameWidth)
 			{
 				if (top >= 0 && top < ScreenHeight)
 				{
@@ -109,7 +109,7 @@ void Graphics::DrawCirc(const CircI& circ, Color c)
 			const int right = circ.center.x + x;
 			const int top = circ.center.y - y;
 			const int bottom = circ.center.y + y;
-			if (left >= 0 && left < ScreenWidth)
+			if (left >= 0 && left < gameWidth)
 			{
 				if (top >= 0 && top < ScreenHeight)
 				{
@@ -120,7 +120,7 @@ void Graphics::DrawCirc(const CircI& circ, Color c)
 					PutPixel(left, bottom, c);
 				}
 			}
-			if (right >= 0 && right < ScreenWidth)
+			if (right >= 0 && right < gameWidth)
 			{
 				if (top >= 0 && top < ScreenHeight)
 				{

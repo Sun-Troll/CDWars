@@ -28,8 +28,11 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	font("Sprites\\Fonts\\asciitext.bmp"),
+	rngMain(rd()),
 	world("Sprites\\Maps\\worldLT.bmp", "Sprites\\Maps\\worldRT.bmp",
-		"Sprites\\Maps\\worldLB.bmp", "Sprites\\Maps\\worldRB.bmp"),
+		"Sprites\\Maps\\worldLB.bmp", "Sprites\\Maps\\worldRB.bmp",
+		"Sprites\\Armies\\armyPlayer.bmp", "Sprites\\Armies\\armyEnemy.bmp",
+		"Sprites\\Armies\\armyTarget.bmp"),
 	menu("Sprites\\Menu\\menuBackground.bmp", "Sprites\\Maps\\wMinimap.bmp")
 {
 	loadTime = "load time: " + std::to_string(stLoad.Duration());
@@ -53,6 +56,7 @@ void Game::Go()
 	t2.join();
 	t3.join();
 	t4.join();
+	DrawFinish();
 	ComposeFrame();
 	updateAndDrawTime = updateAndDrawWatch.Duration() * 1000.0f;
 	gfx.EndFrame();
@@ -60,7 +64,9 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	float ft = frameTimer.Duration();
+	const float ft = frameTimer.Duration();
+
+	world.SpawnEnemies(rngMain);
 
 	bool left = false;
 	bool right = false;
@@ -86,12 +92,34 @@ void Game::UpdateModel()
 
 	world.MoveCamera(left, right, up, down, ft);
 
+	Army::State state = Army::State::March;
+
+	while (!wnd.kbd.KeyIsEmpty())
+	{
+		const Keyboard::Event e = wnd.kbd.ReadKey();
+		if (e.IsRelease())
+		{
+			if (e.GetCode() == '1' || e.GetCode() == '2' || e.GetCode() == '3')
+			{
+				if (e.GetCode() == '2')
+				{
+					state = Army::State::Scout;
+				}
+				else if (e.GetCode() == '3')
+				{
+					state = Army::State::Sneak;
+				}
+				world.PlayerSetState(state);
+			}
+		}
+	}
+
 	if (wnd.mouse.LeftIsPressed())
 	{
 		const VecF mousePos = wnd.mouse.GetPos();
 		if (mousePos.x < float(Graphics::gameWidth))
 		{
-
+			world.PlayerSetTarget(mousePos);
 		}
 		else
 		{
@@ -100,6 +128,9 @@ void Game::UpdateModel()
 	}
 
 	world.ClampCamera();
+
+	world.EnemiesSetTarget(rngMain);
+	world.ArmiesMove(ft);
 }
 
 void Game::DrawPrepare()
@@ -110,11 +141,18 @@ void Game::DrawPrepare()
 void Game::DrawPartScreen(const RectI& screenPart)
 {
 	world.DrawMap(gfx, screenPart);
+	world.DrawArmies(gfx, screenPart);
 }
 
 void Game::DrawMenu()
 {
 	menu.DrawWorld(gfx, Graphics::GetMenuRect(), font, world);
+}
+
+void Game::DrawFinish()
+{
+	world.DrawHeading(gfx);
+	world.DrawDetect(gfx);
 }
 
 void Game::ComposeFrame()

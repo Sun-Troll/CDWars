@@ -4,7 +4,16 @@
 #include <algorithm>
 
 World::World(const std::string& mapLT_in, const std::string& mapRT_in,
-	const std::string& mapLB_in, const std::string& mapRB_in)
+	const std::string& mapLB_in, const std::string& mapRB_in,
+	const std::string& armyPlayer_in, const std::string& armyEnemy_in,
+	const std::string& armyTarget_in)
+	:
+	armyPlayer(armyPlayer_in),
+	armyEnemy(armyEnemy_in),
+	armyTarget(armyTarget_in),
+	playerArmyDrawPos(VecI(player.GetPos()) - VecI{ camRenderX, camRenderY }),
+	playerTargetDrawPos(VecI(player.GetTarget()) - VecI{ camRenderX, camRenderY }),
+	playerDetectRad(int(player.GetDetectRad()))
 {
 	//test code
 	mapLT = Surface{ int(worldRect.GetWidth() / 2), int(worldRect.GetHeight() / 2), forrest };
@@ -27,6 +36,16 @@ World::World(const std::string& mapLT_in, const std::string& mapRT_in,
 	assert(worldRect.GetHeight() / 2 == mapLB.GetHeight());
 	assert(worldRect.GetWidth() / 2 == mapRB.GetWidth());
 	assert(worldRect.GetHeight() / 2 == mapRB.GetHeight());
+
+	assert(armyPlayer.GetWidth() / 2 == halfArmySprite.x);
+	assert(armyPlayer.GetHeight() / 2 == halfArmySprite.y);
+	assert(armyEnemy.GetWidth() / 2 == halfArmySprite.x);
+	assert(armyEnemy.GetHeight() / 2 == halfArmySprite.y);
+	assert(armyTarget.GetWidth() / 2 == halfArmySprite.x);
+	assert(armyTarget.GetHeight() / 2 == halfArmySprite.y);
+
+	//enemies.emplace_back(Army{ Army::State::March, { -7000.0f, 800.0f } });
+	//enemies.emplace_back(Army{ Army::State::March, { -7500.0f, 400.0f } });
 }
 
 void World::MoveCamera(bool left, bool right, bool up, bool down, float dt)
@@ -67,18 +86,150 @@ const VecF& World::GetCamPos() const
 	return cameraPos;
 }
 
+void World::PlayerSetTarget(VecF target)
+{
+	target += cameraPos;
+	target.x = std::max(std::min(target.x - Graphics::gameWidth / 2, worldRect.right), worldRect.left);
+	target.y = std::max(std::min(target.y - Graphics::ScreenHeight / 2, worldRect.bottom), worldRect.top);
+	player.SetTarget(target);
+}
+
+void World::PlayerSetState(Army::State state)
+{
+	player.SwitchState(state);
+}
+
+void World::ArmiesMove(float dt)
+{
+	player.Move(dt);
+	for (Army& a : enemies)
+	{
+		a.Move(dt);
+	}
+}
+
+void World::EnemiesSetTarget(std::mt19937& rng)
+{
+	for (Army& a : enemies)
+	{
+		if (a.Detect(player))
+		{
+			a.SetTarget(player.GetPos());
+		}
+		else
+		{
+			if (a.GetPos() == a.GetTarget())
+			{
+				a.SetTarget({ float(posDist(rng)), float(posDist(rng)) });
+			}
+		}
+	}
+}
+
+void World::SpawnEnemies(std::mt19937& rng)
+{
+	while (enemies.size() < nEnemies)
+	{
+		VecF spawnPos{ 0.0f, 0.0f };
+		do
+		{
+			spawnPos.x = float(posDist(rng));
+			spawnPos.y = float(posDist(rng));
+		} while (VecF{ player.GetPos() - spawnPos }.GetLengthSq() < minSpawnDistSq);
+		const int stateVal = stateDist(rng);
+		int cutoff = 0;
+		Army::State spawnState;
+		if (stateVal < (cutoff += stateScoutChance))
+		{
+			spawnState = Army::State::Scout;
+		}
+		else if (stateVal < (cutoff += StateSneakChance))
+		{
+			spawnState = Army::State::Sneak;
+		}
+		else
+		{
+			spawnState = Army::State::March;
+		}
+		assert(cutoff < 1000);
+		enemies.emplace_back(Army{ spawnState, spawnPos });
+	}
+}
+
+const VecF& World::GetPlayerPos() const
+{
+	return player.GetPos();
+}
+
+const VecF& World::GetPlayerTarget() const
+{
+	return player.GetTarget();
+}
+
+
+const Army::State World::GetPlayerState() const
+{
+	return player.GetState();
+}
+
+const Army& World::GetPlayer() const
+{
+	return player;
+}
+
+const std::vector<Army>& World::GetEnemies() const
+{
+	return enemies;
+}
+
 void World::DrawPrepare()
 {
 	camRenderX = int(cameraPos.x) - Graphics::gameWidth / 2;
 	camRenderY = int(cameraPos.y) - Graphics::ScreenHeight / 2;
+	const VecI offset = VecI{ camRenderX, camRenderY } + halfArmySprite;
+	playerArmyDrawPos = VecI(player.GetPos()) - offset;
+	playerTargetDrawPos = VecI(player.GetTarget()) - offset;
+	playerDetectRad = int(player.GetDetectRad());
+	enemiesDraw.clear();
+	for (const Army& a : enemies)
+	{
+		if (player.Detect(a))
+		{
+			enemiesDraw.emplace_back(VecI(a.GetPos()) - offset);
+		}
+	}
 }
 
-void World::DrawMap(Graphics& gfx, const RectI& DrawRect) const
+void World::DrawMap(Graphics& gfx, const RectI& drawRect) const
 {
-	gfx.DrawSprite(left - camRenderX, top - camRenderY, DrawRect, mapLT, SpriteEffect::Copy{});
-	gfx.DrawSprite(0 - camRenderX, top - camRenderY, DrawRect, mapRT, SpriteEffect::Copy{});
-	gfx.DrawSprite(left - camRenderX, 0 - camRenderY, DrawRect, mapLB, SpriteEffect::Copy{});
-	gfx.DrawSprite(0 - camRenderX, 0 - camRenderY, DrawRect, mapRB, SpriteEffect::Copy{});
+	gfx.DrawSprite(left - camRenderX, top - camRenderY, drawRect, mapLT, SpriteEffect::Copy{});
+	gfx.DrawSprite(0 - camRenderX, top - camRenderY, drawRect, mapRT, SpriteEffect::Copy{});
+	gfx.DrawSprite(left - camRenderX, 0 - camRenderY, drawRect, mapLB, SpriteEffect::Copy{});
+	gfx.DrawSprite(0 - camRenderX, 0 - camRenderY, drawRect, mapRB, SpriteEffect::Copy{});
+}
+
+void World::DrawArmies(Graphics& gfx, const RectI& drawRect) const
+{
+	gfx.DrawSprite(playerArmyDrawPos.x, playerArmyDrawPos.y,
+		drawRect, armyPlayer, SpriteEffect::Chroma{ Colors::White });
+	gfx.DrawSprite(playerTargetDrawPos.x, playerTargetDrawPos.y,
+		drawRect, armyTarget, SpriteEffect::Chroma{ Colors::White });
+	for (const VecI& p : enemiesDraw)
+	{
+		gfx.DrawSprite(p.x, p.y, drawRect, armyEnemy, SpriteEffect::Chroma{ Colors::White });
+	}
+}
+
+void World::DrawHeading(Graphics& gfx) const
+{
+	gfx.DrawLine(VecF(playerArmyDrawPos + halfArmySprite), VecF(playerTargetDrawPos + halfArmySprite), Colors::Blue);
+}
+
+void World::DrawDetect(Graphics & gfx) const
+{
+	const VecI detectCenter = playerArmyDrawPos + halfArmySprite;
+	gfx.DrawCirc({ detectCenter, playerDetectRad }, Colors::Blue);
+	gfx.DrawCirc({ detectCenter, playerDetectRad / 2 }, Colors::Blue);
 }
 
 void World::LoadMap(Surface& map, const std::string& map_in)

@@ -13,9 +13,11 @@ private:
 	static constexpr int leftPadding = 8;
 	static constexpr int minimapTop = 700;
 	static constexpr int mapSize = 256;
+	static constexpr float mapToMinimap = 63.9921875f;
 	Surface background;
 	Surface wMinimap;
 	static constexpr VecF minimapLeftTop{ float(Graphics::gameWidth + leftPadding), float(minimapTop) };
+	static constexpr VecF mapCorOffset{ minimapLeftTop.x + float(mapSize / 2), minimapLeftTop.y + float(mapSize / 2)  };
 	static constexpr RectF minimapRect{ minimapLeftTop.x,
 		minimapLeftTop.x + float(mapSize), minimapLeftTop.y, minimapLeftTop.y + float(mapSize) };
 };

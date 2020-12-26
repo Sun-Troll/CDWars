@@ -41,6 +41,7 @@ private:
 	void DrawPrepare();
 	void DrawPartScreen(const RectI& screenPart);
 	void DrawMenu();
+	void DrawFinish();
 	/********************************/
 private:
 	MainWindow& wnd;
@@ -53,6 +54,8 @@ private:
 	Stopwatch frameTimer;
 	Stopwatch stLoad;
 	Font font;
+	std::random_device rd;
+	std::mt19937 rngMain;
 	World world;
 	Menu menu;
 	/********************************/
