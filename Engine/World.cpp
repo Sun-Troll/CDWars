@@ -44,8 +44,8 @@ World::World(const std::string& mapLT_in, const std::string& mapRT_in,
 	assert(armyTarget.GetWidth() / 2 == halfArmySprite.x);
 	assert(armyTarget.GetHeight() / 2 == halfArmySprite.y);
 
-	enemies.emplace_back(Army{ Army::State::March, { -7000.0f, 800.0f } });
-	enemies.emplace_back(Army{ Army::State::March, { -7500.0f, 400.0f } });
+	//enemies.emplace_back(Army{ Army::State::March, { -7000.0f, 800.0f } });
+	//enemies.emplace_back(Army{ Army::State::March, { -7500.0f, 400.0f } });
 }
 
 void World::MoveCamera(bool left, bool right, bool up, bool down, float dt)
@@ -123,6 +123,36 @@ void World::EnemiesSetTarget(std::mt19937& rng)
 				a.SetTarget({ float(posDist(rng)), float(posDist(rng)) });
 			}
 		}
+	}
+}
+
+void World::SpawnEnemies(std::mt19937& rng)
+{
+	while (enemies.size() < nEnemies)
+	{
+		VecF spawnPos{ 0.0f, 0.0f };
+		do
+		{
+			spawnPos.x = float(posDist(rng));
+			spawnPos.y = float(posDist(rng));
+		} while (VecF{ player.GetPos() - spawnPos }.GetLengthSq() < minSpawnDistSq);
+		const int stateVal = stateDist(rng);
+		int cutoff = 0;
+		Army::State spawnState;
+		if (stateVal < (cutoff += stateScoutChance))
+		{
+			spawnState = Army::State::Scout;
+		}
+		else if (stateVal < (cutoff += StateSneakChance))
+		{
+			spawnState = Army::State::Sneak;
+		}
+		else
+		{
+			spawnState = Army::State::March;
+		}
+		assert(cutoff < 1000);
+		enemies.emplace_back(Army{ spawnState, spawnPos });
 	}
 }
 

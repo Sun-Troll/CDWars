@@ -66,6 +66,8 @@ void Game::UpdateModel()
 {
 	const float ft = frameTimer.Duration();
 
+	world.SpawnEnemies(rngMain);
+
 	bool left = false;
 	bool right = false;
 	bool up = false;

@@ -21,6 +21,7 @@ public:
 	void PlayerSetState(Army::State state);
 	void ArmiesMove(float dt);
 	void EnemiesSetTarget(std::mt19937& rng);
+	void SpawnEnemies(std::mt19937& rng);
 	const VecF& GetPlayerPos() const;
 	const VecF& GetPlayerTarget() const;
 	const Army::State GetPlayerState() const;
@@ -61,4 +62,9 @@ private:
 	std::vector<Army> enemies;
 	std::vector<VecI> enemiesDraw;
 	const std::uniform_int_distribution<int> posDist{ -8190, 8190 };
+	const std::uniform_int_distribution<int> stateDist{ 0, 999 };
+	static constexpr int stateScoutChance = 300;
+	static constexpr int StateSneakChance = 200;
+	static constexpr std::size_t nEnemies = 100;
+	static constexpr float minSpawnDistSq = 5000000;
 };
