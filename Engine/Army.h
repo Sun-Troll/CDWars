@@ -1,5 +1,6 @@
 #pragma once
 #include "Circ.h"
+#include "Division.h"
 
 class Army
 {
@@ -37,4 +38,8 @@ private:
 	VecF target = hitbox.center;
 	float speed = sMarch;
 	float hide = hMarch;
+	Division Center;
+	Division Left;
+	Division Right;
+	Division Reserve;
 };
