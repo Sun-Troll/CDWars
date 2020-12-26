@@ -27,7 +27,9 @@ void Army::Move(float dt)
 
 bool Army::Detect(const Army& enemy) const
 {
-	return detection.Coliding(enemy.hitbox);
+	CircF effDetect = detection;
+	effDetect.radius *= enemy.hide;
+	return effDetect.Coliding(enemy.hitbox);
 }
 
 void Army::SetTarget(const VecF& trg)
