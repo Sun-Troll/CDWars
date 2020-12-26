@@ -49,6 +49,13 @@ void Menu::DrawWorld(Graphics& gfx, const RectI& drawRect, const Font& f, const 
 	f.DrawText(targetPos, { Graphics::gameWidth + leftPadding, 480 }, cText, drawRect, gfx);
 	f.DrawText(camPosStr, { Graphics::gameWidth + leftPadding, 590 }, cText, drawRect, gfx);
 	gfx.DrawSprite(Graphics::gameWidth + leftPadding, minimapTop, drawRect, wMinimap, SpriteEffect::Copy{});
+	for (const Army& a : w.GetEnemies())
+	{
+		if (w.GetPlayer().Detect(a))
+		{
+			gfx.DrawCross(VecI(a.GetPos() / mapToMinimap + mapCorOffset), 2, Colors::Red);
+		}
+	}
 	gfx.DrawCross(VecI(w.GetCamPos() / mapToMinimap + mapCorOffset), 6, Colors::Black);
 	gfx.DrawCross(VecI(w.GetPlayerPos() / mapToMinimap + mapCorOffset), 5, Colors::Blue);
 	gfx.DrawCross(VecI(w.GetPlayerTarget() / mapToMinimap + mapCorOffset), 4, Colors::White);

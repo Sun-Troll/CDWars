@@ -166,9 +166,20 @@ const VecF& World::GetPlayerTarget() const
 	return player.GetTarget();
 }
 
+
 const Army::State World::GetPlayerState() const
 {
 	return player.GetState();
+}
+
+const Army& World::GetPlayer() const
+{
+	return player;
+}
+
+const std::vector<Army>& World::GetEnemies() const
+{
+	return enemies;
 }
 
 void World::DrawPrepare()

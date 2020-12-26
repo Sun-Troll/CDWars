@@ -25,6 +25,8 @@ public:
 	const VecF& GetPlayerPos() const;
 	const VecF& GetPlayerTarget() const;
 	const Army::State GetPlayerState() const;
+	const Army& GetPlayer() const;
+	const std::vector<Army>& GetEnemies() const;
 	//draw
 	void DrawPrepare();
 	void DrawMap(Graphics& gfx, const RectI& drawRect) const;
