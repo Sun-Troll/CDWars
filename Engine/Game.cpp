@@ -124,6 +124,7 @@ void Game::UpdateModel()
 		else
 		{
 			menu.SetWorldCamPos(world, mousePos);
+			menu.ChangeSelect(VecI(mousePos));
 		}
 	}
 

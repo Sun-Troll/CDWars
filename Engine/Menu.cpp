@@ -20,6 +20,22 @@ void Menu::SetWorldCamPos(World& w, const VecF& pos) const
 	}
 }
 
+void Menu::ChangeSelect(const VecI& pos)
+{
+	if (gameSet.ContainsPoint(pos))
+	{
+		sCur = Select::Game;
+	}
+	else if (divSet.ContainsPoint(pos))
+	{
+		sCur = Select::Divisions;
+	}
+	else if (mapSet.ContainsPoint(pos))
+	{
+		sCur = Select::Map;
+	}
+}
+
 void Menu::DrawWorld(Graphics& gfx, const RectI& drawRect, const Font& f, const World& w) const
 {
 	gfx.DrawSprite(Graphics::gameWidth, 0, drawRect, background, SpriteEffect::Copy{});
@@ -45,11 +61,20 @@ void Menu::DrawWorld(Graphics& gfx, const RectI& drawRect, const Font& f, const 
 		+ '\n' + std::to_string(w.GetPlayerTarget().y);
 	const std::string camPosStr = "Camera position:\n" + std::to_string(w.GetCamPos().x)
 		+ '\n' + std::to_string(w.GetCamPos().y);
-	f.DrawText(money, { Graphics::gameWidth + leftPadding, 290 }, cText, drawRect, gfx);
-	f.DrawText(playerState, { Graphics::gameWidth + leftPadding, 330 }, cText, drawRect, gfx);
-	f.DrawText(playerPos, { Graphics::gameWidth + leftPadding, 370 }, cText, drawRect, gfx);
-	f.DrawText(targetPos, { Graphics::gameWidth + leftPadding, 480 }, cText, drawRect, gfx);
-	f.DrawText(camPosStr, { Graphics::gameWidth + leftPadding, 590 }, cText, drawRect, gfx);
+	gfx.DrawRect(gameSet, cText);
+	gfx.DrawRect(divSet, cText);
+	gfx.DrawRect(mapSet, cText);
+	f.DrawText("Game", { Graphics::gameWidth + leftPadding + 8, gameSetY }, cText, drawRect, gfx);
+	f.DrawText("Divisions", { Graphics::gameWidth + leftPadding + 8, divSetY }, cText, drawRect, gfx);
+	f.DrawText("Map", { Graphics::gameWidth + leftPadding + 8, mapSetY }, cText, drawRect, gfx);
+	if (sCur == Select::Map)
+	{
+		f.DrawText(money, { Graphics::gameWidth + leftPadding, 290 }, cText, drawRect, gfx);
+		f.DrawText(playerState, { Graphics::gameWidth + leftPadding, 330 }, cText, drawRect, gfx);
+		f.DrawText(playerPos, { Graphics::gameWidth + leftPadding, 370 }, cText, drawRect, gfx);
+		f.DrawText(targetPos, { Graphics::gameWidth + leftPadding, 480 }, cText, drawRect, gfx);
+		f.DrawText(camPosStr, { Graphics::gameWidth + leftPadding, 590 }, cText, drawRect, gfx);
+	}
 	gfx.DrawSprite(Graphics::gameWidth + leftPadding, minimapTop, drawRect, wMinimap, SpriteEffect::Copy{});
 	for (const Army& a : w.GetEnemies())
 	{
