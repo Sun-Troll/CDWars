@@ -244,6 +244,11 @@ const std::vector<Army>& World::GetEnemies() const
 	return enemies;
 }
 
+int World::GetMoney() const
+{
+	return money;
+}
+
 void World::DrawPrepare()
 {
 	camRenderX = int(cameraPos.x) - Graphics::gameWidth / 2;
