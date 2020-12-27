@@ -57,7 +57,8 @@ private:
 	int camRenderX = int(cameraPos.x) - Graphics::gameWidth / 2;
 	int camRenderY = int(cameraPos.y) - Graphics::ScreenHeight / 2;
 	static constexpr VecI halfArmySprite{ 16, 16 };
-	Army player{ Army::State::March, { -8000.0f, 0.0f } };
+	Army player{ Army::State::March, { -8000.0f, 0.0f }, Division::Unit::Archer, 4, 10, 10,
+	Division::Unit::Knight, 2, 10, 10, Division::Unit::Knight, 2, 10, 10, Division::Unit::Archer, 3, 12, 12 };
 	VecI playerArmyDrawPos;
 	VecI playerTargetDrawPos;
 	int playerDetectRad;
@@ -65,6 +66,9 @@ private:
 	std::vector<VecI> enemiesDraw;
 	const std::uniform_int_distribution<int> posDist{ -8190, 8190 };
 	const std::uniform_int_distribution<int> stateDist{ 0, 999 };
+	const std::uniform_int_distribution<int> gearTraining{ 1, 100 };
+	static constexpr int nUnitTypes = 3;
+	const std::uniform_int_distribution<int> armyUnits{ 0, nUnitTypes - 1 };
 	static constexpr int stateScoutChance = 300;
 	static constexpr int StateSneakChance = 200;
 	static constexpr std::size_t nEnemies = 100;

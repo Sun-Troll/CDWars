@@ -146,6 +146,9 @@
     <ClCompile Include="Army.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Division.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FramebufferPS.hlsl">

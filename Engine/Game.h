@@ -51,12 +51,12 @@ private:
 	Stopwatch updateAndDrawWatch;
 	float updateAndDrawTime = 0.0f;
 	std::string loadTime;
-	Stopwatch frameTimer;
 	Stopwatch stLoad;
 	Font font;
 	std::random_device rd;
 	std::mt19937 rngMain;
 	World world;
 	Menu menu;
+	Stopwatch frameTimer;
 	/********************************/
 };

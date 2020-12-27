@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClCompile Include="Army.cpp" />
     <ClCompile Include="COMInitializer.cpp" />
+    <ClCompile Include="Division.cpp" />
     <ClCompile Include="DXErr.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="Game.cpp" />

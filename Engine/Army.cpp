@@ -1,9 +1,17 @@
 #include "Army.h"
 
-Army::Army(State st_in, const VecF& pos)
+Army::Army(State st_in, const VecF& pos,
+	Division::Unit unitsC, int nLinesC, int gearC, int trainingC,
+	Division::Unit unitsL, int nLinesL, int gearL, int trainingL,
+	Division::Unit unitsR, int nLinesR, int gearR, int trainingR,
+	Division::Unit unitsB, int nLinesB, int gearB, int trainingB)
 	:
 	st(st_in),
-	hitbox(pos, colRad)
+	hitbox(pos, colRad),
+	center(unitsC, nLinesC, gearC, trainingC),
+	left(unitsL, nLinesL, gearL, trainingL),
+	right(unitsR, nLinesR, gearR, trainingR),
+	back(unitsB, nLinesB, gearB, trainingB)
 {
 	SwitchState(st_in);
 }

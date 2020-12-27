@@ -12,7 +12,11 @@ public:
 		Sneak
 	};
 public:
-	Army(State st_in, const VecF& pos);
+	Army(State st_in, const VecF& pos,
+		Division::Unit unitsC, int nLinesC, int gearC, int trainingC,
+		Division::Unit unitsL, int nLinesL, int gearL, int trainingL,
+		Division::Unit unitsR, int nLinesR, int gearR, int trainingR,
+		Division::Unit unitsB, int nLinesB, int gearB, int trainingB);
 	void Move(float dt);
 	bool Detect(const Army& enemy) const;
 	void SetTarget(const VecF& trg);
@@ -38,8 +42,8 @@ private:
 	VecF target = hitbox.center;
 	float speed = sMarch;
 	float hide = hMarch;
-	Division Center;
-	Division Left;
-	Division Right;
-	Division Reserve;
+	Division center;
+	Division left;
+	Division right;
+	Division back;
 };
