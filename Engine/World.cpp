@@ -218,22 +218,6 @@ void World::SpawnEnemies(std::mt19937& rng)
 	}
 }
 
-const VecF& World::GetPlayerPos() const
-{
-	return player.GetPos();
-}
-
-const VecF& World::GetPlayerTarget() const
-{
-	return player.GetTarget();
-}
-
-
-const Army::State World::GetPlayerState() const
-{
-	return player.GetState();
-}
-
 const Army& World::GetPlayer() const
 {
 	return player;

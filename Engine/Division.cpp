@@ -8,7 +8,37 @@ Division::Division(Division::Unit units_in, int nLines_in, int gear_in, int trai
 	gear(gear_in),
 	training(training_in)
 {
-	assert(nLines > 0 && nLines <= 6);
-	assert(gear > 0 && gear <= 100);
-	assert(training > 0 && training <= 100);
+	assert(nLines >= 1 && nLines <= 6);
+	assert(gear >= gtMin && gear <= gtMax);
+	assert(training >= gtMin && training <= gtMax);
+}
+
+Division::Unit Division::GetUnits() const
+{
+	return units;
+}
+
+int Division::GetLines() const
+{
+	return nLines;
+}
+
+int Division::GetGear() const
+{
+	return gear;
+}
+
+int Division::GetTraining() const
+{
+	return training;
+}
+
+int Division::GetGtMin()
+{
+	return gtMin;
+}
+
+int Division::GetGtMax()
+{
+	return gtMax;
 }

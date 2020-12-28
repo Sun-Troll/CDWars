@@ -17,6 +17,9 @@ public:
 	void ChangeSelect(const VecI& pos);
 	void DrawWorld(Graphics& gfx, const RectI& renderRect, const Font& f, const World& w) const;
 private:
+	const std::string UnitsToStr(Division::Unit units) const;
+	const std::string DivToStr(const Army& player, int i) const;
+private:
 	static constexpr Color cText{ 50, 40, 20 };
 	static constexpr int leftPadding = 8;
 	static constexpr int minimapTop = 700;

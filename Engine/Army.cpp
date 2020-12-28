@@ -7,13 +7,13 @@ Army::Army(State st_in, const VecF& pos,
 	Division::Unit unitsB, int nLinesB, int gearB, int trainingB)
 	:
 	st(st_in),
-	hitbox(pos, colRad),
-	center(unitsC, nLinesC, gearC, trainingC),
-	left(unitsL, nLinesL, gearL, trainingL),
-	right(unitsR, nLinesR, gearR, trainingR),
-	back(unitsB, nLinesB, gearB, trainingB)
+	hitbox(pos, colRad)
 {
-	SwitchState(st_in);
+	divisions.reserve(4);
+	divisions.emplace_back(unitsL, nLinesL, gearL, trainingL);
+	divisions.emplace_back(unitsC, nLinesC, gearC, trainingC);
+	divisions.emplace_back(unitsR, nLinesR, gearR, trainingR);
+	divisions.emplace_back(unitsB, nLinesB, gearB, trainingB);
 }
 
 void Army::Move(float dt)
@@ -90,4 +90,24 @@ float Army::GetDetectRad() const
 Army::State Army::GetState() const
 {
 	return st;
+}
+
+Division::Unit Army::GetUnits(int i) const
+{
+	return divisions[i].GetUnits();
+}
+
+int Army::GetLines(int i) const
+{
+	return divisions[i].GetLines();
+}
+
+int Army::GetGear(int i) const
+{
+	return divisions[i].GetGear();
+}
+
+int Army::GetTraining(int i) const
+{
+	return divisions[i].GetTraining();
 }

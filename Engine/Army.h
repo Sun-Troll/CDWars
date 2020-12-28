@@ -1,6 +1,7 @@
 #pragma once
 #include "Circ.h"
 #include "Division.h"
+#include <vector>
 
 class Army
 {
@@ -25,6 +26,11 @@ public:
 	const VecF& GetTarget() const;
 	float GetDetectRad() const;
 	State GetState() const;
+	//divisions
+	Division::Unit GetUnits(int i) const;
+	int GetLines(int i) const;
+	int GetGear(int i) const;
+	int GetTraining(int i) const;
 private:
 	static constexpr float colRad = 16.0f;
 	static constexpr float dMarch = 1024.0f;
@@ -42,8 +48,5 @@ private:
 	VecF target = hitbox.center;
 	float speed = sMarch;
 	float hide = hMarch;
-	Division center;
-	Division left;
-	Division right;
-	Division back;
+	std::vector<Division> divisions;
 };
