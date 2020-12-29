@@ -44,6 +44,8 @@ World::World(const std::string& mapLT_in, const std::string& mapRT_in,
 	assert(armyTarget.GetWidth() / 2 == halfArmySprite.x);
 	assert(armyTarget.GetHeight() / 2 == halfArmySprite.y);
 
+	enemies.reserve(100);
+
 	//enemies.emplace_back(Army{ Army::State::March, { -7000.0f, 800.0f } });
 	//enemies.emplace_back(Army{ Army::State::March, { -7500.0f, 400.0f } });
 }
@@ -136,6 +138,7 @@ void World::SpawnEnemies(std::mt19937& rng)
 			spawnPos.x = float(posDist(rng));
 			spawnPos.y = float(posDist(rng));
 		} while (VecF{ player.GetPos() - spawnPos }.GetLengthSq() < minSpawnDistSq);
+
 		const int stateVal = stateDist(rng);
 		int cutoff = 0;
 		Army::State spawnState;
@@ -152,24 +155,67 @@ void World::SpawnEnemies(std::mt19937& rng)
 			spawnState = Army::State::March;
 		}
 		assert(cutoff < 1000);
-		enemies.emplace_back(Army{ spawnState, spawnPos });
+
+		Division::Unit unitC;
+		Division::Unit unitL;
+		Division::Unit unitR;
+		Division::Unit unitB;
+		int linesC;
+		int linesL;
+		int linesR;
+		int linesB;
+		const int unitType = armyUnits(rng);
+		switch (unitType)
+		{
+		case 0:
+			unitC = Division::Unit::Archer;
+			unitL = Division::Unit::Knight;
+			unitR = Division::Unit::Knight;
+			unitB = Division::Unit::Archer;
+			linesC = 4;
+			linesL = 2;
+			linesR = 2;
+			linesB = 3;
+			break;
+		case 1:
+			unitC = Division::Unit::Knight;
+			unitL = Division::Unit::Knight;
+			unitR = Division::Unit::Knight;
+			unitB = Division::Unit::Archer;
+			linesC = 3;
+			linesL = 2;
+			linesR = 2;
+			linesB = 1;
+			break;
+		case 2:
+			unitC = Division::Unit::Knight;
+			unitL = Division::Unit::Archer;
+			unitR = Division::Unit::Archer;
+			unitB = Division::Unit::Archer;
+			linesC = 5;
+			linesL = 6;
+			linesR = 6;
+			linesB = 2;
+			break;
+		default:
+			break;
+		}
+
+		const int gtBase = gearTraining(rng);
+		const int aGear = (gtBase + gearTraining(rng)) / 2;
+		const int aTraining = (gtBase + gearTraining(rng)) / 2;
+		const int cG = (aGear + gearTraining(rng)) / 2;
+		const int cT = (aTraining + gearTraining(rng)) / 2;
+		const int lG = (aGear + gearTraining(rng)) / 2;
+		const int lT = (aTraining + gearTraining(rng)) / 2;
+		const int rG = (aGear + gearTraining(rng)) / 2;
+		const int rT = (aTraining + gearTraining(rng)) / 2;
+		const int bG = (aGear + gearTraining(rng)) / 2;
+		const int bT = (aTraining + gearTraining(rng)) / 2;
+
+		enemies.emplace_back(Army{ spawnState, spawnPos, unitC, linesC, cG, cT,
+			unitL, linesL, lG, lT, unitR, linesR, rG, rT, unitB, linesB, bG, bT });
 	}
-}
-
-const VecF& World::GetPlayerPos() const
-{
-	return player.GetPos();
-}
-
-const VecF& World::GetPlayerTarget() const
-{
-	return player.GetTarget();
-}
-
-
-const Army::State World::GetPlayerState() const
-{
-	return player.GetState();
 }
 
 const Army& World::GetPlayer() const
@@ -180,6 +226,11 @@ const Army& World::GetPlayer() const
 const std::vector<Army>& World::GetEnemies() const
 {
 	return enemies;
+}
+
+int World::GetMoney() const
+{
+	return money;
 }
 
 void World::DrawPrepare()

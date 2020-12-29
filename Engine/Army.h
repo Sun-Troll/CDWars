@@ -1,5 +1,7 @@
 #pragma once
 #include "Circ.h"
+#include "Division.h"
+#include <vector>
 
 class Army
 {
@@ -11,7 +13,11 @@ public:
 		Sneak
 	};
 public:
-	Army(State st_in, const VecF& pos);
+	Army(State st_in, const VecF& pos,
+		Division::Unit unitsC, int nLinesC, int gearC, int trainingC,
+		Division::Unit unitsL, int nLinesL, int gearL, int trainingL,
+		Division::Unit unitsR, int nLinesR, int gearR, int trainingR,
+		Division::Unit unitsB, int nLinesB, int gearB, int trainingB);
 	void Move(float dt);
 	bool Detect(const Army& enemy) const;
 	void SetTarget(const VecF& trg);
@@ -20,6 +26,11 @@ public:
 	const VecF& GetTarget() const;
 	float GetDetectRad() const;
 	State GetState() const;
+	//divisions
+	Division::Unit GetUnits(int i) const;
+	int GetLines(int i) const;
+	int GetGear(int i) const;
+	int GetTraining(int i) const;
 private:
 	static constexpr float colRad = 16.0f;
 	static constexpr float dMarch = 1024.0f;
@@ -37,4 +48,5 @@ private:
 	VecF target = hitbox.center;
 	float speed = sMarch;
 	float hide = hMarch;
+	std::vector<Division> divisions;
 };

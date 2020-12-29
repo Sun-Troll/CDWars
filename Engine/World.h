@@ -22,11 +22,10 @@ public:
 	void ArmiesMove(float dt);
 	void EnemiesSetTarget(std::mt19937& rng);
 	void SpawnEnemies(std::mt19937& rng);
-	const VecF& GetPlayerPos() const;
-	const VecF& GetPlayerTarget() const;
-	const Army::State GetPlayerState() const;
 	const Army& GetPlayer() const;
 	const std::vector<Army>& GetEnemies() const;
+	//misc
+	int GetMoney() const;
 	//draw
 	void DrawPrepare();
 	void DrawMap(Graphics& gfx, const RectI& drawRect) const;
@@ -53,18 +52,27 @@ private:
 	static constexpr Color taiga{ 44, 198, 162 };
 	static constexpr Color tundra{ 183, 215, 239 };
 	static constexpr float cameraMoveSpeed = 1000.0f;
+
 	VecF cameraPos{ 0.0f, 0.0f };
 	int camRenderX = int(cameraPos.x) - Graphics::gameWidth / 2;
 	int camRenderY = int(cameraPos.y) - Graphics::ScreenHeight / 2;
+
 	static constexpr VecI halfArmySprite{ 16, 16 };
-	Army player{ Army::State::March, { -8000.0f, 0.0f } };
+	Army player{ Army::State::March, { -8000.0f, 0.0f }, Division::Unit::Archer, 4, 10, 10,
+	Division::Unit::Knight, 2, 10, 10, Division::Unit::Knight, 2, 10, 10, Division::Unit::Archer, 3, 12, 12 };
 	VecI playerArmyDrawPos;
 	VecI playerTargetDrawPos;
 	int playerDetectRad;
+
+	int money = 1000;
+
 	std::vector<Army> enemies;
 	std::vector<VecI> enemiesDraw;
 	const std::uniform_int_distribution<int> posDist{ -8190, 8190 };
 	const std::uniform_int_distribution<int> stateDist{ 0, 999 };
+	const std::uniform_int_distribution<int> gearTraining{ Division::GetGtMin(), Division::GetGtMax() };
+	static constexpr int nUnitTypes = 3;
+	const std::uniform_int_distribution<int> armyUnits{ 0, nUnitTypes - 1 };
 	static constexpr int stateScoutChance = 300;
 	static constexpr int StateSneakChance = 200;
 	static constexpr std::size_t nEnemies = 100;
