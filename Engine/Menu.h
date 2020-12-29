@@ -19,6 +19,7 @@ public:
 private:
 	const std::string UnitsToStr(Division::Unit units) const;
 	const std::string DivToStr(const Army& player, int i) const;
+	const std::string StateToStr(Army::State state) const;
 private:
 	static constexpr Color cText{ 50, 40, 20 };
 	static constexpr int leftPadding = 8;

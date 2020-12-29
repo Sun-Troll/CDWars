@@ -40,27 +40,6 @@ void Menu::DrawWorld(Graphics& gfx, const RectI& drawRect, const Font& f, const 
 {
 	gfx.DrawSprite(Graphics::gameWidth, 0, drawRect, background, SpriteEffect::Copy{});
 	std::string money = "Money: " + std::to_string(w.GetMoney());
-	std::string playerState = "State: ";
-	switch (w.GetPlayer().GetState())
-	{
-	case Army::State::March:
-		playerState += "March";
-		break;
-	case Army::State::Scout:
-		playerState += "Scout";
-		break;
-	case Army::State::Sneak:
-		playerState += "Sneak";
-		break;
-	default:
-		break;
-	}
-	const std::string playerPos = "Army position:\n" + std::to_string(w.GetPlayer().GetPos().x)
-		+ '\n' + std::to_string(w.GetPlayer().GetPos().y);
-	const std::string targetPos = "Target position:\n" + std::to_string(w.GetPlayer().GetTarget().x)
-		+ '\n' + std::to_string(w.GetPlayer().GetTarget().y);
-	const std::string camPosStr = "Camera position:\n" + std::to_string(w.GetCamPos().x)
-		+ '\n' + std::to_string(w.GetCamPos().y);
 	gfx.DrawRect(gameSet, cText);
 	gfx.DrawRect(divSet, cText);
 	gfx.DrawRect(mapSet, cText);
@@ -86,11 +65,21 @@ void Menu::DrawWorld(Graphics& gfx, const RectI& drawRect, const Font& f, const 
 	}
 		break;
 	case Menu::Select::Map:
+	{
+		const Army& pa = w.GetPlayer();
+		const std::string playerState = "State: " + StateToStr(pa.GetState());
+		const std::string playerPos = "Army position:\n" + std::to_string(pa.GetPos().x)
+			+ '\n' + std::to_string(pa.GetPos().y);
+		const std::string targetPos = "Target position:\n" + std::to_string(pa.GetTarget().x)
+			+ '\n' + std::to_string(pa.GetTarget().y);
+		const std::string camPosStr = "Camera position:\n" + std::to_string(w.GetCamPos().x)
+			+ '\n' + std::to_string(w.GetCamPos().y);
 		f.DrawText(money, { Graphics::gameWidth + leftPadding, 290 }, cText, drawRect, gfx);
 		f.DrawText(playerState, { Graphics::gameWidth + leftPadding, 330 }, cText, drawRect, gfx);
 		f.DrawText(playerPos, { Graphics::gameWidth + leftPadding, 370 }, cText, drawRect, gfx);
 		f.DrawText(targetPos, { Graphics::gameWidth + leftPadding, 480 }, cText, drawRect, gfx);
 		f.DrawText(camPosStr, { Graphics::gameWidth + leftPadding, 590 }, cText, drawRect, gfx);
+	}
 		break;
 	default:
 		break;
@@ -125,4 +114,19 @@ const std::string Menu::DivToStr(const Army& player, int i) const
 {
 	return std::string(UnitsToStr(player.GetUnits(i)) + "\n  L:" + std::to_string(player.GetLines(i))
 		+ " G:" + std::to_string(player.GetGear(i)) + " T:" + std::to_string(player.GetTraining(i)));
+}
+
+const std::string Menu::StateToStr(Army::State state) const
+{
+	switch (state)
+	{
+	case Army::State::March:
+		return "March";
+	case Army::State::Scout:
+		return "Scout";
+	case Army::State::Sneak:
+		return "Sneak";
+	default:
+		return "wrongState";
+	}
 }
