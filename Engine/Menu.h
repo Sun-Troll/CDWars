@@ -33,11 +33,14 @@ private:
 	static constexpr RectF minimapRect{ minimapLeftTop.x,
 		minimapLeftTop.x + float(mapSize), minimapLeftTop.y, minimapLeftTop.y + float(mapSize) };
 
+	static constexpr int bOff = 8;
 	static constexpr int gameSetY = 20;
 	static constexpr int divSetY = 60;
 	static constexpr int mapSetY = 100;
+	static constexpr int armyEditY = 635;
 	static constexpr RectI gameSet{ Graphics::gameWidth + leftPadding, Graphics::ScreenWidth - 20, gameSetY, gameSetY + 35 };
 	static constexpr RectI divSet{ Graphics::gameWidth + leftPadding, Graphics::ScreenWidth - 20, divSetY, divSetY + 35 };
 	static constexpr RectI mapSet{ Graphics::gameWidth + leftPadding, Graphics::ScreenWidth - 20, mapSetY, mapSetY + 35 };
+	static constexpr RectI armyEdit{ Graphics::gameWidth + leftPadding, Graphics::ScreenWidth - 20, armyEditY, armyEditY + 35 };
 	Select sCur = Select::Map;
 };
