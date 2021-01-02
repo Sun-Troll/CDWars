@@ -218,6 +218,11 @@ void World::SpawnEnemies(std::mt19937& rng)
 	}
 }
 
+Army& World::SetPlayer()
+{
+	return player;
+}
+
 const Army& World::GetPlayer() const
 {
 	return player;

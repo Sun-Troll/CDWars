@@ -22,6 +22,7 @@ public:
 	void ArmiesMove(float dt);
 	void EnemiesSetTarget(std::mt19937& rng);
 	void SpawnEnemies(std::mt19937& rng);
+	Army& SetPlayer();
 	const Army& GetPlayer() const;
 	const std::vector<Army>& GetEnemies() const;
 	//misc

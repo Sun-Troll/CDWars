@@ -142,6 +142,7 @@
     <ClInclude Include="Circ.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="COMInitializer.h" />
+    <ClInclude Include="ArmyEditor.h" />
     <ClInclude Include="Division.h" />
     <ClInclude Include="DXErr.h" />
     <ClInclude Include="Font.h" />
@@ -164,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Army.cpp" />
+    <ClCompile Include="ArmyEditor.cpp" />
     <ClCompile Include="COMInitializer.cpp" />
     <ClCompile Include="Division.cpp" />
     <ClCompile Include="DXErr.cpp" />
