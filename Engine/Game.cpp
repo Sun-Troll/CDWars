@@ -59,7 +59,7 @@ void Game::Go()
 	t3.join();
 	t4.join();
 	DrawFinish();
-	ComposeFrame();
+	//ComposeFrame();
 	updateAndDrawTime = updateAndDrawWatch.Duration() * 1000.0f;
 	gfx.EndFrame();
 }
