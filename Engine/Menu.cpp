@@ -36,6 +36,11 @@ void Menu::ChangeSelect(const VecI& pos)
 	}
 }
 
+bool Menu::ToggleArmyEditor(const VecI& pos) const
+{
+	return armyEdit.ContainsPoint(pos);
+}
+
 void Menu::DrawWorld(Graphics& gfx, const RectI& drawRect, const Font& f, const World& w) const
 {
 	gfx.DrawSprite(Graphics::gameWidth, 0, drawRect, background, SpriteEffect::Copy{});

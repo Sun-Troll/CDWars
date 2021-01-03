@@ -51,6 +51,7 @@ void Game::Go()
 	std::thread t3(&Game::DrawPartScreen, std::ref(*this), Graphics::GetGameLBRect());
 	std::thread t4(&Game::DrawPartScreen, std::ref(*this), Graphics::GetGameRBRect());
 	//DrawPartScreen(Graphics::GetGameRect());
+	DrawArmyEditor();
 	t0.join();
 	UpdateModel();
 	t1.join();
@@ -127,7 +128,21 @@ void Game::UpdateModel()
 			else
 			{
 				menu.SetWorldCamPos(world, mousePos);
-				menu.ChangeSelect(VecI(mousePos));
+			}
+		}
+		while (!wnd.mouse.IsEmpty())
+		{
+			const Mouse::Event e = wnd.mouse.Read();
+			if (e.GetPosX() > Graphics::gameWidth)
+			{
+				if (e.GetType() == Mouse::Event::Type::LPress)
+				{
+					menu.ChangeSelect(VecI(e.GetPos()));
+					if (menu.ToggleArmyEditor(VecI(e.GetPos())))
+					{
+						curMode = Mode::ArmyEdit;
+					}
+				}
 			}
 		}
 
@@ -135,6 +150,25 @@ void Game::UpdateModel()
 
 		world.EnemiesSetTarget(rngMain);
 		world.ArmiesMove(ft);
+	}
+
+	else if (curMode == Mode::ArmyEdit)
+	{
+		wnd.kbd.Flush();
+		while (!wnd.mouse.IsEmpty())
+		{
+			const Mouse::Event e = wnd.mouse.Read();
+			if (e.GetPosX() > Graphics::gameWidth)
+			{
+				if (e.GetType() == Mouse::Event::Type::LPress)
+				{
+					if (menu.ToggleArmyEditor(VecI(e.GetPos())))
+					{
+						curMode = Mode::Map;
+					}
+				}
+			}
+		}
 	}
 }
 
