@@ -21,6 +21,10 @@ void ArmyEditor::Draw(Graphics& gfx, const RectI& drawRect, const Font& f) const
 	f.DrawText(divL, { padBase, 170 }, cText, drawRect, gfx);
 	f.DrawText(divR, { padBase, 320 }, cText, drawRect, gfx);
 	f.DrawText(divB, { padBase, 470 }, cText, drawRect, gfx);
+	gfx.DrawRect(cLinesDec, cText);
+	gfx.DrawRect(cLinesInc, cText);
+	f.DrawText("-", cLinesDecLT, cText, drawRect, gfx);
+	f.DrawText("+", cLinesIncLT, cText, drawRect, gfx);
 }
 
 const std::string ArmyEditor::UnitsToStr(Division::Unit units) const
