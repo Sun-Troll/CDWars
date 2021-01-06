@@ -1,8 +1,8 @@
 #include "Army.h"
 
 Army::Army(State st_in, const VecF& pos,
-	Division::Unit unitsC, int nLinesC, int gearC, int trainingC,
 	Division::Unit unitsL, int nLinesL, int gearL, int trainingL,
+	Division::Unit unitsC, int nLinesC, int gearC, int trainingC,
 	Division::Unit unitsR, int nLinesR, int gearR, int trainingR,
 	Division::Unit unitsB, int nLinesB, int gearB, int trainingB)
 	:

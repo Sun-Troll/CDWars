@@ -24,12 +24,12 @@ ArmyEditor::ArmyEditor(const std::string& background_in, Army& player_in)
 void ArmyEditor::Draw(Graphics& gfx, const RectI& drawRect, const Font& f) const
 {
 	gfx.DrawSprite(0, 0, drawRect, background, SpriteEffect::Copy{});
-	const std::string divC = "Center: " + DivToStr(1);
 	const std::string divL = "Left: " + DivToStr(0);
+	const std::string divC = "Center: " + DivToStr(1);
 	const std::string divR = "Right: " + DivToStr(2);
 	const std::string divB = "Back: " + DivToStr(3);
-	f.DrawText(divC, { padBase, 20 }, cText, drawRect, gfx);
-	f.DrawText(divL, { padBase, 170 }, cText, drawRect, gfx);
+	f.DrawText(divL, { padBase, 20 }, cText, drawRect, gfx);
+	f.DrawText(divC, { padBase, 170 }, cText, drawRect, gfx);
 	f.DrawText(divR, { padBase, 320 }, cText, drawRect, gfx);
 	f.DrawText(divB, { padBase, 470 }, cText, drawRect, gfx);
 	for (auto cur = butLinesLT.cbegin(), end = butLinesLT.cend(); cur < end; ++cur)

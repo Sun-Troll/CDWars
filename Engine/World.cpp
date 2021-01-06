@@ -156,44 +156,44 @@ void World::SpawnEnemies(std::mt19937& rng)
 		}
 		assert(cutoff < 1000);
 
-		Division::Unit unitC;
 		Division::Unit unitL;
+		Division::Unit unitC;
 		Division::Unit unitR;
 		Division::Unit unitB;
-		int linesC;
 		int linesL;
+		int linesC;
 		int linesR;
 		int linesB;
 		const int unitType = armyUnits(rng);
 		switch (unitType)
 		{
 		case 0:
-			unitC = Division::Unit::Archer;
 			unitL = Division::Unit::Knight;
+			unitC = Division::Unit::Archer;
 			unitR = Division::Unit::Knight;
 			unitB = Division::Unit::Archer;
-			linesC = 4;
 			linesL = 2;
+			linesC = 4;
 			linesR = 2;
 			linesB = 3;
 			break;
 		case 1:
-			unitC = Division::Unit::Knight;
 			unitL = Division::Unit::Knight;
+			unitC = Division::Unit::Knight;
 			unitR = Division::Unit::Knight;
 			unitB = Division::Unit::Archer;
-			linesC = 3;
 			linesL = 2;
+			linesC = 3;
 			linesR = 2;
 			linesB = 1;
 			break;
 		case 2:
-			unitC = Division::Unit::Knight;
 			unitL = Division::Unit::Archer;
+			unitC = Division::Unit::Knight;
 			unitR = Division::Unit::Archer;
 			unitB = Division::Unit::Archer;
-			linesC = 5;
 			linesL = 6;
+			linesC = 5;
 			linesR = 6;
 			linesB = 2;
 			break;
@@ -204,17 +204,17 @@ void World::SpawnEnemies(std::mt19937& rng)
 		const int gtBase = gearTraining(rng);
 		const int aGear = (gtBase + gearTraining(rng)) / 2;
 		const int aTraining = (gtBase + gearTraining(rng)) / 2;
-		const int cG = (aGear + gearTraining(rng)) / 2;
-		const int cT = (aTraining + gearTraining(rng)) / 2;
 		const int lG = (aGear + gearTraining(rng)) / 2;
 		const int lT = (aTraining + gearTraining(rng)) / 2;
+		const int cG = (aGear + gearTraining(rng)) / 2;
+		const int cT = (aTraining + gearTraining(rng)) / 2;
 		const int rG = (aGear + gearTraining(rng)) / 2;
 		const int rT = (aTraining + gearTraining(rng)) / 2;
 		const int bG = (aGear + gearTraining(rng)) / 2;
 		const int bT = (aTraining + gearTraining(rng)) / 2;
 
-		enemies.emplace_back(Army{ spawnState, spawnPos, unitC, linesC, cG, cT,
-			unitL, linesL, lG, lT, unitR, linesR, rG, rT, unitB, linesB, bG, bT });
+		enemies.emplace_back(Army{ spawnState, spawnPos, unitL, linesL, lG, lT,
+			unitC, linesC, cG, cT, unitR, linesR, rG, rT, unitB, linesB, bG, bT });
 	}
 }
 
