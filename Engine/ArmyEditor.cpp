@@ -8,6 +8,17 @@ ArmyEditor::ArmyEditor(const std::string& background_in, Army& player_in)
 {
 	assert(background.GetWidth() == Graphics::gameWidth);
 	assert(background.GetHeight() == Graphics::ScreenHeight);
+	butLinesLT.reserve(8);
+	for (int n = 0; n < 4; ++n)
+	{
+		butLinesLT.emplace_back(butXpos, butYpos + butSpaceY * n);
+		butLinesLT.emplace_back(butXpos + butSpaceX, butYpos + butSpaceY * n);
+	}
+	butLinesR.reserve(8);
+	for (int n = 0; n < butLinesLT.size(); ++n)
+	{
+		butLinesR.emplace_back(butLinesLT[n].x - butTP, butLinesLT[n].x + butW, butLinesLT[n].y, butLinesLT[n].y + butH);
+	}
 }
 
 void ArmyEditor::Draw(Graphics& gfx, const RectI& drawRect, const Font& f) const
@@ -21,10 +32,27 @@ void ArmyEditor::Draw(Graphics& gfx, const RectI& drawRect, const Font& f) const
 	f.DrawText(divL, { padBase, 170 }, cText, drawRect, gfx);
 	f.DrawText(divR, { padBase, 320 }, cText, drawRect, gfx);
 	f.DrawText(divB, { padBase, 470 }, cText, drawRect, gfx);
-	DrawLinesBut(gfx, drawRect, f, cLinesDecLT, cLinesIncLT, cLinesDec, cLinesInc);
-	DrawLinesBut(gfx, drawRect, f, lLinesDecLT, lLinesIncLT, lLinesDec, lLinesInc);
-	DrawLinesBut(gfx, drawRect, f, rLinesDecLT, rLinesIncLT, rLinesDec, rLinesInc);
-	DrawLinesBut(gfx, drawRect, f, bLinesDecLT, bLinesIncLT, bLinesDec, bLinesInc);
+	for (auto cur = butLinesLT.cbegin(), end = butLinesLT.cend(); cur < end; ++cur)
+	{
+		f.DrawText("-", *cur, cText, drawRect, gfx);
+		++cur;
+		f.DrawText("+", *cur, cText, drawRect, gfx);
+	}
+	for (const RectI& r : butLinesR)
+	{
+		gfx.DrawRect(r, cText);
+	}
+}
+
+void ArmyEditor::CheckButtons(const VecI& pos)
+{
+	for (int i = 0; i < butLinesR.size(); ++i)
+	{
+		if (butLinesR[i].ContainsPoint(pos))
+		{
+			temp.SetLines(i / 2, i % 2);
+		}
+	}
 }
 
 const std::string ArmyEditor::UnitsToStr(Division::Unit units) const
@@ -46,11 +74,3 @@ const std::string ArmyEditor::DivToStr(int i) const
 		+ "\n  gear: " + std::to_string(temp.GetGear(i)) + "\n  training: " + std::to_string(temp.GetGear(i)));
 }
 
-void ArmyEditor::DrawLinesBut(Graphics& gfx, const RectI& drawRect, const Font& f,
-	const VecI& lvd, const VecI& lvi, const RectI& lrd, const RectI& lri) const
-{
-	gfx.DrawRect(lrd, cText);
-	gfx.DrawRect(lri, cText);
-	f.DrawText("-", lvd, cText, drawRect, gfx);
-	f.DrawText("+", lvi, cText, drawRect, gfx);
-}

@@ -27,6 +27,7 @@ public:
 	float GetDetectRad() const;
 	State GetState() const;
 	//divisions
+	void SetLines(int i, bool more);
 	Division::Unit GetUnits(int i) const;
 	int GetLines(int i) const;
 	int GetGear(int i) const;

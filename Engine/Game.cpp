@@ -158,7 +158,14 @@ void Game::UpdateModel()
 		while (!wnd.mouse.IsEmpty())
 		{
 			const Mouse::Event e = wnd.mouse.Read();
-			if (e.GetPosX() > Graphics::gameWidth)
+			if (e.GetPosX() < Graphics::gameWidth)
+			{
+				if (e.GetType() == Mouse::Event::Type::LPress)
+				{
+					armEdit.CheckButtons(VecI(e.GetPos()));
+				}
+			}
+			else
 			{
 				if (e.GetType() == Mouse::Event::Type::LPress)
 				{
