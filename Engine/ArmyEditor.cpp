@@ -21,10 +21,10 @@ void ArmyEditor::Draw(Graphics& gfx, const RectI& drawRect, const Font& f) const
 	f.DrawText(divL, { padBase, 170 }, cText, drawRect, gfx);
 	f.DrawText(divR, { padBase, 320 }, cText, drawRect, gfx);
 	f.DrawText(divB, { padBase, 470 }, cText, drawRect, gfx);
-	gfx.DrawRect(cLinesDec, cText);
-	gfx.DrawRect(cLinesInc, cText);
-	f.DrawText("-", cLinesDecLT, cText, drawRect, gfx);
-	f.DrawText("+", cLinesIncLT, cText, drawRect, gfx);
+	DrawLinesBut(gfx, drawRect, f, cLinesDecLT, cLinesIncLT, cLinesDec, cLinesInc);
+	DrawLinesBut(gfx, drawRect, f, lLinesDecLT, lLinesIncLT, lLinesDec, lLinesInc);
+	DrawLinesBut(gfx, drawRect, f, rLinesDecLT, rLinesIncLT, rLinesDec, rLinesInc);
+	DrawLinesBut(gfx, drawRect, f, bLinesDecLT, bLinesIncLT, bLinesDec, bLinesInc);
 }
 
 const std::string ArmyEditor::UnitsToStr(Division::Unit units) const
@@ -44,4 +44,13 @@ const std::string ArmyEditor::DivToStr(int i) const
 {
 	return std::string(UnitsToStr(temp.GetUnits(i)) + "\n  lines: " + std::to_string(temp.GetLines(i))
 		+ "\n  gear: " + std::to_string(temp.GetGear(i)) + "\n  training: " + std::to_string(temp.GetGear(i)));
+}
+
+void ArmyEditor::DrawLinesBut(Graphics& gfx, const RectI& drawRect, const Font& f,
+	const VecI& lvd, const VecI& lvi, const RectI& lrd, const RectI& lri) const
+{
+	gfx.DrawRect(lrd, cText);
+	gfx.DrawRect(lri, cText);
+	f.DrawText("-", lvd, cText, drawRect, gfx);
+	f.DrawText("+", lvi, cText, drawRect, gfx);
 }
