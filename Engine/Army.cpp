@@ -97,6 +97,11 @@ void Army::SetLines(int i, bool more)
 	divisions[i].SetLines(more);
 }
 
+void Army::SetGear(int i, bool more)
+{
+	divisions[i].SetGear(more);
+}
+
 Division::Unit Army::GetUnits(int i) const
 {
 	return divisions[i].GetUnits();

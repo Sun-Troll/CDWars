@@ -25,6 +25,18 @@ void Division::SetLines(bool more)
 	}
 }
 
+void Division::SetGear(bool more)
+{
+	if (more && gear < gtMax)
+	{
+		++gear;
+	}
+	else if (!more && gear > gtMin)
+	{
+		--gear;
+	}
+}
+
 Division::Unit Division::GetUnits() const
 {
 	return units;

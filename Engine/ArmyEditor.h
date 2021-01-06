@@ -12,6 +12,9 @@ public:
 private:
 	const std::string UnitsToStr(Division::Unit units) const;
 	const std::string DivToStr(int i) const;
+	const std::string GearCosts(int i) const;
+	int CalcBuyCost(int curGear) const;
+	int CalcSellCost(int curGear) const;
 private:
 	static constexpr Color cText{ 50, 40, 20 };
 	static constexpr int padBase = 16;
@@ -26,6 +29,15 @@ private:
 	static constexpr int butYpos = 55;
 	static constexpr int butSpaceX = 50;
 	static constexpr int butSpaceY = 150;
+	static constexpr int butGearYpos = butYpos + 35;
 	std::vector<VecI> butLinesLT;
 	std::vector<RectI> butLinesR;
+	std::vector<VecI> butGearLT;
+	std::vector<RectI> butGearR;
+	std::vector<int> gearCost;
+	std::vector<int> gearSell;
+	std::vector<int> gearBuy;
+	static constexpr float gearCostBase = 100.0f;
+	static constexpr float gearCostIncrease = 1.05f;
+	static constexpr int gearCostPad = padBase + 350;
 };

@@ -11,6 +11,7 @@ public:
 public:
 	Division(Division::Unit units_in, int nLines_in, int gear_in, int training_in);
 	void SetLines(bool more);
+	void SetGear(bool more);
 	Unit GetUnits() const;
 	int GetLines() const;
 	int GetGear() const;
