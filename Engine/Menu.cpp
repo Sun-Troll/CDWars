@@ -36,6 +36,11 @@ void Menu::ChangeSelect(const VecI& pos)
 	}
 }
 
+bool Menu::ToggleArmyEditor(const VecI& pos) const
+{
+	return armyEdit.ContainsPoint(pos);
+}
+
 void Menu::DrawWorld(Graphics& gfx, const RectI& drawRect, const Font& f, const World& w) const
 {
 	gfx.DrawSprite(Graphics::gameWidth, 0, drawRect, background, SpriteEffect::Copy{});
@@ -43,9 +48,9 @@ void Menu::DrawWorld(Graphics& gfx, const RectI& drawRect, const Font& f, const 
 	gfx.DrawRect(gameSet, cText);
 	gfx.DrawRect(divSet, cText);
 	gfx.DrawRect(mapSet, cText);
-	f.DrawText("Game", { Graphics::gameWidth + leftPadding + 8, gameSetY }, cText, drawRect, gfx);
-	f.DrawText("Divisions", { Graphics::gameWidth + leftPadding + 8, divSetY }, cText, drawRect, gfx);
-	f.DrawText("Map", { Graphics::gameWidth + leftPadding + 8, mapSetY }, cText, drawRect, gfx);
+	f.DrawText("Game", { Graphics::gameWidth + leftPadding + bOff, gameSetY }, cText, drawRect, gfx);
+	f.DrawText("Divisions", { Graphics::gameWidth + leftPadding + bOff, divSetY }, cText, drawRect, gfx);
+	f.DrawText("Map", { Graphics::gameWidth + leftPadding + bOff, mapSetY }, cText, drawRect, gfx);
 	switch (sCur)
 	{
 	case Menu::Select::Game:
@@ -53,15 +58,19 @@ void Menu::DrawWorld(Graphics& gfx, const RectI& drawRect, const Font& f, const 
 	case Menu::Select::Divisions:
 	{
 		const Army& pa = w.GetPlayer();
-		const std::string dc = "C: " + DivToStr(pa, 1);
 		const std::string dl = "L: " + DivToStr(pa, 0);
+		const std::string dc = "C: " + DivToStr(pa, 1);
 		const std::string dr = "R: " + DivToStr(pa, 2);
 		const std::string db = "B: " + DivToStr(pa, 3);
 		f.DrawText(money, { Graphics::gameWidth + leftPadding, 150 }, cText, drawRect, gfx);
-		f.DrawText(dc, { Graphics::gameWidth + leftPadding, 190 }, cText, drawRect, gfx);
-		f.DrawText(dl, { Graphics::gameWidth + leftPadding, 260 }, cText, drawRect, gfx);
+		f.DrawText(dl, { Graphics::gameWidth + leftPadding, 190 }, cText, drawRect, gfx);
+		f.DrawText(dc, { Graphics::gameWidth + leftPadding, 260 }, cText, drawRect, gfx);
 		f.DrawText(dr, { Graphics::gameWidth + leftPadding, 330 }, cText, drawRect, gfx);
 		f.DrawText(db, { Graphics::gameWidth + leftPadding, 400 }, cText, drawRect, gfx);
+		f.DrawText("(C)enter (L)eft\n(R)ight (B)ack\n(L)ines (G)ear\n(T)raining",
+			{ Graphics::gameWidth + leftPadding, 480 }, cText, drawRect, gfx);
+		gfx.DrawRect(armyEdit, cText);
+		f.DrawText("Army Editor", { Graphics::gameWidth + leftPadding + bOff, armyEditY }, cText, drawRect, gfx);
 	}
 		break;
 	case Menu::Select::Map:

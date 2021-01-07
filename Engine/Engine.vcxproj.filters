@@ -93,6 +93,9 @@
     <ClInclude Include="Division.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ArmyEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">
@@ -147,6 +150,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Division.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ArmyEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

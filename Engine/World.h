@@ -22,6 +22,7 @@ public:
 	void ArmiesMove(float dt);
 	void EnemiesSetTarget(std::mt19937& rng);
 	void SpawnEnemies(std::mt19937& rng);
+	Army& SetPlayer();
 	const Army& GetPlayer() const;
 	const std::vector<Army>& GetEnemies() const;
 	//misc
@@ -58,8 +59,8 @@ private:
 	int camRenderY = int(cameraPos.y) - Graphics::ScreenHeight / 2;
 
 	static constexpr VecI halfArmySprite{ 16, 16 };
-	Army player{ Army::State::March, { -8000.0f, 0.0f }, Division::Unit::Archer, 4, 10, 10,
-	Division::Unit::Knight, 2, 10, 10, Division::Unit::Knight, 2, 10, 10, Division::Unit::Archer, 3, 12, 12 };
+	Army player{ Army::State::March, { -8000.0f, 0.0f }, Division::Unit::Knight, 2, 10, 10,
+		Division::Unit::Archer, 4, 10, 10, Division::Unit::Knight, 2, 10, 10, Division::Unit::Archer, 3, 12, 12 };
 	VecI playerArmyDrawPos;
 	VecI playerTargetDrawPos;
 	int playerDetectRad;

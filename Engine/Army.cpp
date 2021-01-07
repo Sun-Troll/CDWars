@@ -1,8 +1,8 @@
 #include "Army.h"
 
 Army::Army(State st_in, const VecF& pos,
-	Division::Unit unitsC, int nLinesC, int gearC, int trainingC,
 	Division::Unit unitsL, int nLinesL, int gearL, int trainingL,
+	Division::Unit unitsC, int nLinesC, int gearC, int trainingC,
 	Division::Unit unitsR, int nLinesR, int gearR, int trainingR,
 	Division::Unit unitsB, int nLinesB, int gearB, int trainingB)
 	:
@@ -90,6 +90,16 @@ float Army::GetDetectRad() const
 Army::State Army::GetState() const
 {
 	return st;
+}
+
+void Army::SetLines(int i, bool more)
+{
+	divisions[i].SetLines(more);
+}
+
+void Army::SetGear(int i, bool more)
+{
+	divisions[i].SetGear(more);
 }
 
 Division::Unit Army::GetUnits(int i) const

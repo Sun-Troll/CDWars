@@ -25,9 +25,17 @@
 #include "Graphics.h"
 #include "Menu.h"
 #include "Stopwatch.h"
+#include "ArmyEditor.h"
 
 class Game
 {
+public:
+	enum class Mode
+	{
+		Map,
+		ArmyEdit,
+		Battle
+	};
 public:
 	Game( class MainWindow& wnd );
 	Game( const Game& ) = delete;
@@ -41,6 +49,7 @@ private:
 	void DrawPrepare();
 	void DrawPartScreen(const RectI& screenPart);
 	void DrawMenu();
+	void DrawArmyEditor();
 	void DrawFinish();
 	/********************************/
 private:
@@ -55,8 +64,10 @@ private:
 	Font font;
 	std::random_device rd;
 	std::mt19937 rngMain;
+	Mode curMode = Mode::Map;
 	World world;
 	Menu menu;
+	ArmyEditor armEdit;
 	Stopwatch frameTimer;
 	/********************************/
 };

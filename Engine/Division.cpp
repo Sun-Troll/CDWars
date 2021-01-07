@@ -13,6 +13,30 @@ Division::Division(Division::Unit units_in, int nLines_in, int gear_in, int trai
 	assert(training >= gtMin && training <= gtMax);
 }
 
+void Division::SetLines(bool more)
+{
+	if (more && nLines < 6)
+	{
+		++nLines;
+	}
+	else if (!more && nLines > 1)
+	{
+		--nLines;
+	}
+}
+
+void Division::SetGear(bool more)
+{
+	if (more && gear < gtMax)
+	{
+		++gear;
+	}
+	else if (!more && gear > gtMin)
+	{
+		--gear;
+	}
+}
+
 Division::Unit Division::GetUnits() const
 {
 	return units;

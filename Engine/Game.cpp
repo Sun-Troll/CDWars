@@ -33,7 +33,8 @@ Game::Game(MainWindow& wnd)
 		"Sprites\\Maps\\worldLB.bmp", "Sprites\\Maps\\worldRB.bmp",
 		"Sprites\\Armies\\armyPlayer.bmp", "Sprites\\Armies\\armyEnemy.bmp",
 		"Sprites\\Armies\\armyTarget.bmp"),
-	menu("Sprites\\Menu\\menuBackground.bmp", "Sprites\\Maps\\wMinimap.bmp")
+	menu("Sprites\\Menu\\menuBackground.bmp", "Sprites\\Maps\\wMinimap.bmp"),
+	armEdit("Sprites\\ArmyEditor\\armyBackground.bmp", world.SetPlayer())
 {
 	loadTime = "load time: " + std::to_string(stLoad.Duration());
 }
@@ -50,6 +51,7 @@ void Game::Go()
 	std::thread t3(&Game::DrawPartScreen, std::ref(*this), Graphics::GetGameLBRect());
 	std::thread t4(&Game::DrawPartScreen, std::ref(*this), Graphics::GetGameRBRect());
 	//DrawPartScreen(Graphics::GetGameRect());
+	DrawArmyEditor();
 	t0.join();
 	UpdateModel();
 	t1.join();
@@ -57,7 +59,7 @@ void Game::Go()
 	t3.join();
 	t4.join();
 	DrawFinish();
-	ComposeFrame();
+	//ComposeFrame();
 	updateAndDrawTime = updateAndDrawWatch.Duration() * 1000.0f;
 	gfx.EndFrame();
 }
@@ -66,83 +68,132 @@ void Game::UpdateModel()
 {
 	const float ft = frameTimer.Duration();
 
-	world.SpawnEnemies(rngMain);
-
-	bool left = false;
-	bool right = false;
-	bool up = false;
-	bool down = false;
-
-	if (wnd.kbd.KeyIsPressed('A'))
+	if (curMode == Mode::Map)
 	{
-		left = true;
-	}
-	if (wnd.kbd.KeyIsPressed('D'))
-	{
-		right = true;
-	}
-	if (wnd.kbd.KeyIsPressed('W'))
-	{
-		up = true;
-	}
-	if (wnd.kbd.KeyIsPressed('S'))
-	{
-		down = true;
-	}
+		world.SpawnEnemies(rngMain);
 
-	world.MoveCamera(left, right, up, down, ft);
+		bool left = false;
+		bool right = false;
+		bool up = false;
+		bool down = false;
 
-	Army::State state = Army::State::March;
-
-	while (!wnd.kbd.KeyIsEmpty())
-	{
-		const Keyboard::Event e = wnd.kbd.ReadKey();
-		if (e.IsRelease())
+		if (wnd.kbd.KeyIsPressed('A'))
 		{
-			if (e.GetCode() == '1' || e.GetCode() == '2' || e.GetCode() == '3')
+			left = true;
+		}
+		if (wnd.kbd.KeyIsPressed('D'))
+		{
+			right = true;
+		}
+		if (wnd.kbd.KeyIsPressed('W'))
+		{
+			up = true;
+		}
+		if (wnd.kbd.KeyIsPressed('S'))
+		{
+			down = true;
+		}
+
+		world.MoveCamera(left, right, up, down, ft);
+
+		Army::State state = Army::State::March;
+
+		while (!wnd.kbd.KeyIsEmpty())
+		{
+			const Keyboard::Event e = wnd.kbd.ReadKey();
+			if (e.IsRelease())
 			{
-				if (e.GetCode() == '2')
+				if (e.GetCode() == '1' || e.GetCode() == '2' || e.GetCode() == '3')
 				{
-					state = Army::State::Scout;
+					if (e.GetCode() == '2')
+					{
+						state = Army::State::Scout;
+					}
+					else if (e.GetCode() == '3')
+					{
+						state = Army::State::Sneak;
+					}
+					world.PlayerSetState(state);
 				}
-				else if (e.GetCode() == '3')
+			}
+		}
+
+		if (wnd.mouse.LeftIsPressed())
+		{
+			const VecF mousePos = wnd.mouse.GetPos();
+			if (mousePos.x < float(Graphics::gameWidth))
+			{
+				world.PlayerSetTarget(mousePos);
+			}
+			else
+			{
+				menu.SetWorldCamPos(world, mousePos);
+			}
+		}
+		while (!wnd.mouse.IsEmpty())
+		{
+			const Mouse::Event e = wnd.mouse.Read();
+			if (e.GetPosX() > Graphics::gameWidth)
+			{
+				if (e.GetType() == Mouse::Event::Type::LPress)
 				{
-					state = Army::State::Sneak;
+					menu.ChangeSelect(VecI(e.GetPos()));
+					if (menu.ToggleArmyEditor(VecI(e.GetPos())))
+					{
+						curMode = Mode::ArmyEdit;
+					}
 				}
-				world.PlayerSetState(state);
+			}
+		}
+
+		world.ClampCamera();
+
+		world.EnemiesSetTarget(rngMain);
+		world.ArmiesMove(ft);
+	}
+
+	else if (curMode == Mode::ArmyEdit)
+	{
+		wnd.kbd.Flush();
+		while (!wnd.mouse.IsEmpty())
+		{
+			const Mouse::Event e = wnd.mouse.Read();
+			if (e.GetPosX() < Graphics::gameWidth)
+			{
+				if (e.GetType() == Mouse::Event::Type::LPress)
+				{
+					armEdit.CheckButtons(VecI(e.GetPos()));
+				}
+			}
+			else
+			{
+				if (e.GetType() == Mouse::Event::Type::LPress)
+				{
+					if (menu.ToggleArmyEditor(VecI(e.GetPos())))
+					{
+						curMode = Mode::Map;
+					}
+				}
 			}
 		}
 	}
-
-	if (wnd.mouse.LeftIsPressed())
-	{
-		const VecF mousePos = wnd.mouse.GetPos();
-		if (mousePos.x < float(Graphics::gameWidth))
-		{
-			world.PlayerSetTarget(mousePos);
-		}
-		else
-		{
-			menu.SetWorldCamPos(world, mousePos);
-			menu.ChangeSelect(VecI(mousePos));
-		}
-	}
-
-	world.ClampCamera();
-
-	world.EnemiesSetTarget(rngMain);
-	world.ArmiesMove(ft);
 }
 
 void Game::DrawPrepare()
 {
-	world.DrawPrepare();
+	if (curMode == Mode::Map)
+	{
+		world.DrawPrepare();
+	}
 }
 
 void Game::DrawPartScreen(const RectI& screenPart)
 {
-	world.DrawMap(gfx, screenPart);
-	world.DrawArmies(gfx, screenPart);
+	if (curMode == Mode::Map)
+	{
+		world.DrawMap(gfx, screenPart);
+		world.DrawArmies(gfx, screenPart);
+	}
 }
 
 void Game::DrawMenu()
@@ -150,10 +201,21 @@ void Game::DrawMenu()
 	menu.DrawWorld(gfx, Graphics::GetMenuRect(), font, world);
 }
 
+void Game::DrawArmyEditor()
+{
+	if (curMode == Mode::ArmyEdit)
+	{
+		armEdit.Draw(gfx, Graphics::GetGameRect(), font);
+	}
+}
+
 void Game::DrawFinish()
 {
-	world.DrawHeading(gfx);
-	world.DrawDetect(gfx);
+	if (curMode == Mode::Map)
+	{
+		world.DrawHeading(gfx);
+		world.DrawDetect(gfx);
+	}
 }
 
 void Game::ComposeFrame()
