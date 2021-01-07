@@ -6,7 +6,6 @@ Army::Army(State st_in, const VecF& pos,
 	Division::Unit unitsR, int nLinesR, int gearR, int trainingR,
 	Division::Unit unitsB, int nLinesB, int gearB, int trainingB)
 	:
-	st(st_in),
 	hitbox(pos, colRad)
 {
 	divisions.reserve(4);
@@ -14,6 +13,7 @@ Army::Army(State st_in, const VecF& pos,
 	divisions.emplace_back(unitsC, nLinesC, gearC, trainingC);
 	divisions.emplace_back(unitsR, nLinesR, gearR, trainingR);
 	divisions.emplace_back(unitsB, nLinesB, gearB, trainingB);
+	SwitchState(st_in);
 }
 
 void Army::Move(float dt)
