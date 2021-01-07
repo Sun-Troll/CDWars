@@ -13,6 +13,7 @@ private:
 	const std::string UnitsToStr(Division::Unit units) const;
 	const std::string DivToStr(int i) const;
 	const std::string GearCosts(int i) const;
+	int CalcTotalCost(int curGear, int prewGear) const;
 	int CalcBuyCost(int curGear) const;
 	int CalcSellCost(int curGear) const;
 private:
@@ -40,4 +41,9 @@ private:
 	static constexpr float gearCostBase = 100.0f;
 	static constexpr float gearCostIncrease = 1.05f;
 	static constexpr int gearCostPad = padBase + 350;
+
+	static constexpr VecI resetTL{ padBase * 2, Graphics::ScreenHeight - 50 };
+	static constexpr VecI confirmTL{ resetTL.x + 190, resetTL.y };
+	static constexpr RectI resetR{ resetTL.x, resetTL.x + 90, resetTL.y, resetTL.y + 35 };
+	static constexpr RectI confirmR{ confirmTL.x, confirmTL.x + 126, confirmTL.y, confirmTL.y + 35 };
 };

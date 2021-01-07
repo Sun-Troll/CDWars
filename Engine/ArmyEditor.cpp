@@ -81,6 +81,10 @@ void ArmyEditor::Draw(Graphics& gfx, const RectI& drawRect, const Font& f) const
 	f.DrawText(GearCosts(1), { gearCostPad, 240 }, cText, drawRect, gfx);
 	f.DrawText(GearCosts(2), { gearCostPad, 390 }, cText, drawRect, gfx);
 	f.DrawText(GearCosts(3), { gearCostPad, 540 }, cText, drawRect, gfx);
+	gfx.DrawRect(resetR, cText);
+	gfx.DrawRect(confirmR, cText);
+	f.DrawText("reset", resetTL, cText, drawRect, gfx);
+	f.DrawText("confirm", confirmTL, cText, drawRect, gfx);
 }
 
 void ArmyEditor::CheckButtons(const VecI& pos)
@@ -98,6 +102,7 @@ void ArmyEditor::CheckButtons(const VecI& pos)
 		{
 			const int divI = i / 2;
 			temp.SetGear(divI, i % 2);
+			gearCost[divI] = CalcTotalCost(temp.GetGear(divI), player.GetGear(divI));
 			gearSell[divI] = CalcSellCost(temp.GetGear(divI));
 			gearBuy[divI] = CalcBuyCost(temp.GetGear(divI));
 		}
@@ -127,6 +132,26 @@ const std::string ArmyEditor::GearCosts(int i) const
 {
 	return std::string("current: " + std::to_string(gearCost[i]) + " sell: " + std::to_string(gearSell[i])
 		+ " buy: " + std::to_string(gearBuy[i]));
+}
+
+int ArmyEditor::CalcTotalCost(int curGear, int prewGear) const
+{
+	int totCost = 0;
+	if (curGear > prewGear)
+	{
+		for (int n = prewGear; n < curGear; ++n)
+		{
+			totCost += CalcBuyCost(n);
+		}
+	}
+	else
+	{
+		for (int n = prewGear; n > curGear; --n)
+		{
+			totCost -= CalcSellCost(n);
+		}
+	}
+	return totCost;
 }
 
 int ArmyEditor::CalcBuyCost(int curGear) const
