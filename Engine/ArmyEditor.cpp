@@ -147,7 +147,7 @@ const std::string ArmyEditor::UnitsToStr(Division::Unit units) const
 const std::string ArmyEditor::DivToStr(int i) const
 {
 	return std::string(UnitsToStr(temp.GetUnits(i)) + "\n  lines: " + std::to_string(temp.GetLines(i))
-		+ "\n  gear: " + std::to_string(temp.GetGear(i)) + "\n  training: " + std::to_string(temp.GetGear(i)));
+		+ "\n  gear: " + std::to_string(temp.GetGear(i)) + "\n  training: " + std::to_string(temp.GetTraining(i)));
 }
 
 const std::string ArmyEditor::GearCosts(int i) const
