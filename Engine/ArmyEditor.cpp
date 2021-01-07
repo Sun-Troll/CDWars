@@ -89,22 +89,44 @@ void ArmyEditor::Draw(Graphics& gfx, const RectI& drawRect, const Font& f) const
 
 void ArmyEditor::CheckButtons(const VecI& pos)
 {
-	for (int i = 0; i < butLinesR.size(); ++i)
+	if (resetR.ContainsPoint(pos))
 	{
-		if (butLinesR[i].ContainsPoint(pos))
+		temp = player;
+		assert(gearCost.size() == gearSell.size() && gearCost.size() == gearBuy.size());
+		for (int i = 0; i < gearCost.size(); i++)
 		{
-			temp.SetLines(i / 2, i % 2);
+			gearCost[i] = 0;
+			gearSell[i] = CalcSellCost(temp.GetGear(i));
+			gearBuy[i] = CalcBuyCost(temp.GetGear(i));
 		}
 	}
-	for (int i = 0; i < butGearR.size(); ++i)
+	else if (confirmR.ContainsPoint(pos))
 	{
-		if (butGearR[i].ContainsPoint(pos))
+		player = temp;
+		for (int& c : gearCost)
 		{
-			const int divI = i / 2;
-			temp.SetGear(divI, i % 2);
-			gearCost[divI] = CalcTotalCost(temp.GetGear(divI), player.GetGear(divI));
-			gearSell[divI] = CalcSellCost(temp.GetGear(divI));
-			gearBuy[divI] = CalcBuyCost(temp.GetGear(divI));
+			c = 0;
+		}
+	}
+	else
+	{
+		for (int i = 0; i < butLinesR.size(); ++i)
+		{
+			if (butLinesR[i].ContainsPoint(pos))
+			{
+				temp.SetLines(i / 2, i % 2);
+			}
+		}
+		for (int i = 0; i < butGearR.size(); ++i)
+		{
+			if (butGearR[i].ContainsPoint(pos))
+			{
+				const int divI = i / 2;
+				temp.SetGear(divI, i % 2);
+				gearCost[divI] = CalcTotalCost(temp.GetGear(divI), player.GetGear(divI));
+				gearSell[divI] = CalcSellCost(temp.GetGear(divI));
+				gearBuy[divI] = CalcBuyCost(temp.GetGear(divI));
+			}
 		}
 	}
 }
