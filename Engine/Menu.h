@@ -16,6 +16,7 @@ public:
 	void SetWorldCamPos(World& w, const VecF& pos) const;
 	void ChangeSelect(const VecI& pos);
 	bool ToggleArmyEditor(const VecI& pos) const;
+	//int SaveButtons(const VecI& pos) const;
 	void DrawWorld(Graphics& gfx, const RectI& renderRect, const Font& f, const World& w) const;
 private:
 	const std::string UnitsToStr(Division::Unit units) const;
@@ -43,5 +44,14 @@ private:
 	static constexpr RectI divSet{ Graphics::gameWidth + leftPadding, Graphics::ScreenWidth - 20, divSetY, divSetY + 35 };
 	static constexpr RectI mapSet{ Graphics::gameWidth + leftPadding, Graphics::ScreenWidth - 20, mapSetY, mapSetY + 35 };
 	static constexpr RectI armyEdit{ Graphics::gameWidth + leftPadding, Graphics::ScreenWidth - 20, armyEditY, armyEditY + 35 };
+
+	static constexpr int saveLoadPadX = leftPadding * 4;
+	static constexpr int saveLoadY = 160;
+	static constexpr int saveLoadPadY = 40;
+	static constexpr int saveLoadGap = 50;
+	static constexpr int saveLoadN = 12;
+	std::vector<VecI> saveLoadsTL;
+	std::vector<RectI> saveLoadsR;
+
 	Select sCur = Select::Map;
 };

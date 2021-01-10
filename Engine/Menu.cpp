@@ -10,6 +10,22 @@ Menu::Menu(const std::string& background_in, const std::string& wMinimap_in)
 	assert(background.GetHeight() == Graphics::ScreenHeight);
 	assert(wMinimap.GetWidth() == mapSize);
 	assert(wMinimap.GetHeight() == mapSize);
+
+	assert(saveLoadN % 2 == 0);
+	saveLoadsTL.reserve(saveLoadN);
+	for (int n = 0; n < saveLoadN / 2; ++n)
+	{
+		saveLoadsTL.emplace_back(Graphics::gameWidth + saveLoadPadX, saveLoadY + n * saveLoadPadY);
+	}
+	for (int n = saveLoadN / 2; n < saveLoadN; ++n)
+	{
+		saveLoadsTL.emplace_back(Graphics::gameWidth + saveLoadPadX, saveLoadY + n * saveLoadPadY + saveLoadGap);
+	}
+	saveLoadsR.reserve(saveLoadN);
+	for (int n = 0; n < saveLoadN; ++n)
+	{
+		saveLoadsR.emplace_back(saveLoadsTL[n], 90, 35);
+	}
 }
 
 void Menu::SetWorldCamPos(World& w, const VecF& pos) const
@@ -38,7 +54,7 @@ void Menu::ChangeSelect(const VecI& pos)
 
 bool Menu::ToggleArmyEditor(const VecI& pos) const
 {
-	return armyEdit.ContainsPoint(pos);
+	return sCur == Select::Divisions && armyEdit.ContainsPoint(pos);
 }
 
 void Menu::DrawWorld(Graphics& gfx, const RectI& drawRect, const Font& f, const World& w) const
@@ -54,6 +70,21 @@ void Menu::DrawWorld(Graphics& gfx, const RectI& drawRect, const Font& f, const 
 	switch (sCur)
 	{
 	case Menu::Select::Game:
+	{
+		for (const RectI& r : saveLoadsR)
+		{
+			gfx.DrawRect(r, cText);
+		}
+		const int iHalf = int(saveLoadsTL.size()) / 2;
+		for (int i = 0; i < iHalf; ++i)
+		{
+			f.DrawText("Save" + std::to_string(i + 1), saveLoadsTL[i], cText, drawRect, gfx);
+		}
+		for (int i = iHalf; i < saveLoadsTL.size(); ++i)
+		{
+			f.DrawText("Load" + std::to_string(i - iHalf + 1), saveLoadsTL[i], cText, drawRect, gfx);
+		}
+	}
 		break;
 	case Menu::Select::Divisions:
 	{
