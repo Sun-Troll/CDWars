@@ -150,8 +150,7 @@ void Game::UpdateModel()
 					}
 					else if (load != 0)
 					{
-						int testl = load;
-						// load game
+						sL.Load(load, world.SetPlayer());
 					}
 				}
 			}

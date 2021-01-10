@@ -6,7 +6,7 @@
 class Army
 {
 public:
-	enum class State
+	enum class State : unsigned char
 	{
 		March,
 		Scout,

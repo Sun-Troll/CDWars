@@ -3,7 +3,7 @@
 class Division
 {
 public:
-	enum class Unit
+	enum class Unit : unsigned char
 	{
 		Knight,
 		Archer
