@@ -6,8 +6,9 @@
 class SaveLoad
 {
 public:
-	void Save(const std::string& file, const Army& player) const;
-	bool Load(const std::string& file, Army& player) const;
+	void Save(int n, const Army& player) const;
+	bool Load(int n, Army& player) const;
 private:
-
+	const std::string files = "Saves\\save";
+	const std::string fExtension = ".dat";
 };

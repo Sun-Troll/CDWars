@@ -1,15 +1,18 @@
 #include "SaveLoad.h"
 #include <fstream>
+#include <cassert>
 
-void SaveLoad::Save(const std::string& file, const Army& player) const
+void SaveLoad::Save(int n, const Army& player) const
 {
-	std::ofstream out(file, std::ios::binary);
+	assert(n > 0);
+	std::ofstream out(files + std::to_string(n) + fExtension, std::ios::binary);
 	out.write(reinterpret_cast<const char*>(&player), sizeof(player));
 }
 
-bool SaveLoad::Load(const std::string& file, Army& player) const
+bool SaveLoad::Load(int n, Army& player) const
 {
-	std::ifstream in(file, std::ios::binary);
+	assert(n > 0);
+	std::ifstream in(files + std::to_string(n) + fExtension, std::ios::binary);
 	if (in)
 	{
 		in.read(reinterpret_cast<char*>(&player), sizeof(player));

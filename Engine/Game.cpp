@@ -146,8 +146,7 @@ void Game::UpdateModel()
 					}
 					else if (save != 0)
 					{
-						int tests = save;
-						// save game
+						//sL.Save(save, world.GetPlayer());
 					}
 					else if (load != 0)
 					{
