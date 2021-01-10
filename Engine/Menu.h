@@ -16,7 +16,8 @@ public:
 	void SetWorldCamPos(World& w, const VecF& pos) const;
 	void ChangeSelect(const VecI& pos);
 	bool ToggleArmyEditor(const VecI& pos) const;
-	//int SaveButtons(const VecI& pos) const;
+	int SaveButtons(const VecI& pos) const;
+	int LoadButtons(const VecI& pos) const;
 	void DrawWorld(Graphics& gfx, const RectI& renderRect, const Font& f, const World& w) const;
 private:
 	const std::string UnitsToStr(Division::Unit units) const;

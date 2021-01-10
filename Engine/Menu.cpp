@@ -57,6 +57,36 @@ bool Menu::ToggleArmyEditor(const VecI& pos) const
 	return sCur == Select::Divisions && armyEdit.ContainsPoint(pos);
 }
 
+int Menu::SaveButtons(const VecI& pos) const
+{
+	if (sCur == Select::Game)
+	{
+		for (int i = 0; i < saveLoadsR.size() / 2; ++i)
+		{
+			if (saveLoadsR[i].ContainsPoint(pos))
+			{
+				return i + 1;
+			}
+		}
+	}
+	return 0;
+}
+
+int Menu::LoadButtons(const VecI& pos) const
+{
+	if (sCur == Select::Game)
+	{
+		for (int i = int(saveLoadsR.size()) / 2; i < saveLoadsR.size(); ++i)
+		{
+			if (saveLoadsR[i].ContainsPoint(pos))
+			{
+				return i - int(saveLoadsR.size()) / 2 + 1;
+			}
+		}
+	}
+	return 0;
+}
+
 void Menu::DrawWorld(Graphics& gfx, const RectI& drawRect, const Font& f, const World& w) const
 {
 	gfx.DrawSprite(Graphics::gameWidth, 0, drawRect, background, SpriteEffect::Copy{});

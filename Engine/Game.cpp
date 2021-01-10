@@ -138,9 +138,21 @@ void Game::UpdateModel()
 				if (e.GetType() == Mouse::Event::Type::LPress)
 				{
 					menu.ChangeSelect(VecI(e.GetPos()));
+					const int save = menu.SaveButtons(VecI(e.GetPos()));
+					const int load = menu.LoadButtons(VecI(e.GetPos()));
 					if (menu.ToggleArmyEditor(VecI(e.GetPos())))
 					{
 						curMode = Mode::ArmyEdit;
+					}
+					else if (save != 0)
+					{
+						int tests = save;
+						// save game
+					}
+					else if (load != 0)
+					{
+						int testl = load;
+						// load game
 					}
 				}
 			}
