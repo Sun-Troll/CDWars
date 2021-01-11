@@ -20,6 +20,7 @@ public:
 		Division::Unit unitsB, int nLinesB, int gearB, int trainingB);
 	void Move(float dt);
 	bool Detect(const Army& enemy) const;
+	void SetPos(const VecF& pos);
 	void SetTarget(const VecF& trg);
 	void SwitchState(State stNew);
 	const VecF& GetPos() const;

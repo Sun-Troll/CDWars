@@ -40,6 +40,11 @@ bool Army::Detect(const Army& enemy) const
 	return effDetect.Coliding(enemy.hitbox);
 }
 
+void Army::SetPos(const VecF& pos)
+{
+	hitbox.center = pos;
+}
+
 void Army::SetTarget(const VecF& trg)
 {
 	target = trg;

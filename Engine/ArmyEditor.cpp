@@ -102,6 +102,8 @@ void ArmyEditor::CheckButtons(const VecI& pos)
 	}
 	else if (confirmR.ContainsPoint(pos))
 	{
+		temp.SetPos(player.GetPos());
+		temp.SetTarget(player.GetTarget());
 		player = temp;
 		for (int& c : gearCost)
 		{
