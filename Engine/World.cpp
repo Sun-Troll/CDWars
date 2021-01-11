@@ -130,6 +130,7 @@ void World::EnemiesSetTarget(std::mt19937& rng)
 
 void World::SpawnEnemies(std::mt19937& rng)
 {
+	assert(enemies.capacity() == nEnemies);
 	while (enemies.size() < nEnemies)
 	{
 		VecF spawnPos{ 0.0f, 0.0f };
@@ -216,11 +217,17 @@ void World::SpawnEnemies(std::mt19937& rng)
 		enemies.emplace_back(Army{ spawnState, spawnPos, unitL, linesL, lG, lT,
 			unitC, linesC, cG, cT, unitR, linesR, rG, rT, unitB, linesB, bG, bT });
 	}
+	assert(enemies.size() == enemies.capacity() && enemies.size() == nEnemies);
 }
 
 Army& World::SetPlayer()
 {
 	return player;
+}
+
+std::vector<Army>& World::SetEnemies()
+{
+	return enemies;
 }
 
 const Army& World::GetPlayer() const
