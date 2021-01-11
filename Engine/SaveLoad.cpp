@@ -8,10 +8,10 @@ void SaveLoad::Save(int n, const Army& player, const std::vector<Army>& enemies)
 	std::ofstream out(fileName + std::to_string(n) + fExtension, std::ios::binary);
 	ArmySave(out, player);
 
-	//for (const Army& a : enemies)
-	//{
-	//
-	//}
+	for (const Army& a : enemies)
+	{
+		ArmySave(out, a);
+	}
 } // 9 + 52 + 8 = 69 * 101 = 6969
 
 bool SaveLoad::Load(int n, Army& player, std::vector<Army>& enemies) const
@@ -21,6 +21,11 @@ bool SaveLoad::Load(int n, Army& player, std::vector<Army>& enemies) const
 	if (in)
 	{
 		player = ArmyLoad(in);
+
+		for (Army& a : enemies)
+		{
+			a = ArmyLoad(in);
+		}
 	}
 	return false;
 }

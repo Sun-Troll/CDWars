@@ -70,6 +70,7 @@ void Game::UpdateModel()
 
 	if (curMode == Mode::Map)
 	{
+		// call kill befor spawn!!!!
 		world.SpawnEnemies(rngMain);
 
 		bool left = false;
