@@ -148,11 +148,11 @@ void Game::UpdateModel()
 					}
 					else if (save != 0)
 					{
-						sL.Save(save, world.GetPlayer(), world.GetEnemies());
+						sL.Save(save, world.GetMoney(), world.GetPlayer(), world.GetEnemies());
 					}
 					else if (load != 0)
 					{
-						sL.Load(load, world.SetPlayer(), world.SetEnemies());
+						world.AddMoney(sL.Load(load, world.GetMoney(), world.SetPlayer(), world.SetEnemies()));
 					}
 				}
 			}

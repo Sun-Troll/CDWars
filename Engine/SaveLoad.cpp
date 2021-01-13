@@ -2,24 +2,32 @@
 #include <fstream>
 #include <cassert>
 
-void SaveLoad::Save(int n, const Army& player, const std::vector<Army>& enemies) const
+void SaveLoad::Save(int n, int money, const Army& player, const std::vector<Army>& enemies) const
 {
 	assert(n > 0);
 	std::ofstream out(fileName + std::to_string(n) + fExtension, std::ios::binary);
+
+	out.write(reinterpret_cast<const char*>(&money), sizeof(money));
+
 	ArmySave(out, player);
 
 	for (const Army& a : enemies)
 	{
 		ArmySave(out, a);
 	}
-} // 9 + 52 + 8 = 69 * 101 = 6969
+} // 9 + 52 + 8 = 4 + 69 * 101 = 6973
 
-bool SaveLoad::Load(int n, Army& player, std::vector<Army>& enemies) const
+int SaveLoad::Load(int n, int money, Army& player, std::vector<Army>& enemies) const
 {
 	assert(n > 0);
 	std::ifstream in(fileName + std::to_string(n) + fExtension, std::ios::binary);
 	if (in)
 	{
+		money *= -1;
+		int moneySave;
+		in.read(reinterpret_cast<char*>(&moneySave), sizeof(moneySave));
+		money += moneySave;
+
 		player = ArmyLoad(in);
 
 		for (Army& a : enemies)
@@ -27,7 +35,7 @@ bool SaveLoad::Load(int n, Army& player, std::vector<Army>& enemies) const
 			a = ArmyLoad(in);
 		}
 	}
-	return false;
+	return money;
 }
 
 void SaveLoad::ArmySave(std::ofstream& out, const Army& army) const
