@@ -144,6 +144,7 @@ void Game::UpdateModel()
 					if (menu.ToggleArmyEditor(VecI(e.GetPos())))
 					{
 						curMode = Mode::ArmyEdit;
+						armEdit.SetCurMoney(world.GetMoney());
 					}
 					else if (save != 0)
 					{

@@ -1,6 +1,7 @@
 #include "ArmyEditor.h"
 #include <cassert>
 #include <cmath>
+#include <numeric>
 
 ArmyEditor::ArmyEditor(const std::string& background_in, Army& player_in)
 	:
@@ -81,6 +82,10 @@ void ArmyEditor::Draw(Graphics& gfx, const RectI& drawRect, const Font& f) const
 	f.DrawText(GearCosts(1), { gearCostPad, 240 }, cText, drawRect, gfx);
 	f.DrawText(GearCosts(2), { gearCostPad, 390 }, cText, drawRect, gfx);
 	f.DrawText(GearCosts(3), { gearCostPad, 540 }, cText, drawRect, gfx);
+	const std::string gearTotCost = "money: " + std::to_string(curMoney) + " cost: " + std::to_string(gearTotalCost)
+		+ " remains: " + std::to_string(curMoney - gearTotalCost);
+	f.DrawText(gearTotCost, { padBase, 620 }, cText, drawRect, gfx);
+
 	gfx.DrawRect(resetR, cText);
 	gfx.DrawRect(confirmR, cText);
 	f.DrawText("reset", resetTL, cText, drawRect, gfx);
@@ -99,8 +104,9 @@ void ArmyEditor::CheckButtons(const VecI& pos)
 			gearSell[i] = CalcSellCost(temp.GetGear(i));
 			gearBuy[i] = CalcBuyCost(temp.GetGear(i));
 		}
+		gearTotalCost = 0;
 	}
-	else if (confirmR.ContainsPoint(pos))
+	else if (confirmR.ContainsPoint(pos) && gearTotalCost <= curMoney)
 	{
 		temp.SetPos(player.GetPos());
 		temp.SetTarget(player.GetTarget());
@@ -109,6 +115,8 @@ void ArmyEditor::CheckButtons(const VecI& pos)
 		{
 			c = 0;
 		}
+		curMoney -= gearTotalCost;
+		gearTotalCost = 0;
 	}
 	else
 	{
@@ -128,9 +136,15 @@ void ArmyEditor::CheckButtons(const VecI& pos)
 				gearCost[divI] = CalcTotalCost(temp.GetGear(divI), player.GetGear(divI));
 				gearSell[divI] = CalcSellCost(temp.GetGear(divI));
 				gearBuy[divI] = CalcBuyCost(temp.GetGear(divI));
+				gearTotalCost = std::accumulate(gearCost.begin(), gearCost.end(), 0);
 			}
 		}
 	}
+}
+
+void ArmyEditor::SetCurMoney(int money)
+{
+	curMoney = money;
 }
 
 const std::string ArmyEditor::UnitsToStr(Division::Unit units) const

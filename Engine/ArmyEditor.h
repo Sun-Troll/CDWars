@@ -9,6 +9,7 @@ public:
 	ArmyEditor(const std::string& background_in, Army& player_in);
 	void Draw(Graphics& gfx, const RectI& drawRect, const Font& f) const;
 	void CheckButtons(const VecI& pos);
+	void SetCurMoney(int money);
 private:
 	const std::string UnitsToStr(Division::Unit units) const;
 	const std::string DivToStr(int i) const;
@@ -38,6 +39,8 @@ private:
 	std::vector<int> gearCost;
 	std::vector<int> gearSell;
 	std::vector<int> gearBuy;
+	int gearTotalCost = 0;
+	int curMoney = 0;
 	static constexpr float gearCostBase = 100.0f;
 	static constexpr float gearCostIncrease = 1.05f;
 	static constexpr int gearCostPad = padBase + 350;
