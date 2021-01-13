@@ -61,7 +61,7 @@ private:
 	int camRenderY = int(cameraPos.y) - Graphics::ScreenHeight / 2;
 
 	static constexpr VecI halfArmySprite{ 16, 16 };
-	Army player{ Army::State::March, { -8000.0f, 0.0f }, Division::Unit::Knight, 2, 10, 10,
+	Army player{ Army::State::March, { -8000.0f, 0.0f }, Division::Unit::Knight, 2u, 10, 10,
 		Division::Unit::Archer, 4, 10, 10, Division::Unit::Knight, 2, 10, 10, Division::Unit::Archer, 3, 12, 12 };
 	VecI playerArmyDrawPos;
 	VecI playerTargetDrawPos;

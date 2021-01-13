@@ -1,7 +1,7 @@
 #include "Division.h"
 #include <cassert>
 
-Division::Division(Division::Unit units_in, int nLines_in, int gear_in, int training_in)
+Division::Division(Division::Unit units_in, unsigned char nLines_in, unsigned char gear_in, unsigned char training_in)
 	:
 	units(units_in),
 	nLines(nLines_in),
@@ -42,27 +42,27 @@ Division::Unit Division::GetUnits() const
 	return units;
 }
 
-int Division::GetLines() const
+unsigned char Division::GetLines() const
 {
 	return nLines;
 }
 
-int Division::GetGear() const
+unsigned char Division::GetGear() const
 {
 	return gear;
 }
 
-int Division::GetTraining() const
+unsigned char Division::GetTraining() const
 {
 	return training;
 }
 
-int Division::GetGtMin()
+unsigned char Division::GetGtMin()
 {
 	return gtMin;
 }
 
-int Division::GetGtMax()
+unsigned char Division::GetGtMax()
 {
 	return gtMax;
 }

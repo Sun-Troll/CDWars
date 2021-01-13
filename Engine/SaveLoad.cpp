@@ -15,7 +15,7 @@ void SaveLoad::Save(int n, int money, const Army& player, const std::vector<Army
 	{
 		ArmySave(out, a);
 	}
-} // 9 + 52 + 8 = 4 + 69 * 101 = 6973
+} // 9 + 16 + 8 => 4 + 33 * 101 = 3337
 
 int SaveLoad::Load(int n, int money, Army& player, std::vector<Army>& enemies) const
 {
@@ -50,9 +50,9 @@ void SaveLoad::ArmySave(std::ofstream& out, const Army& army) const
 	for (int i = 0; i < 4; ++i)
 	{
 		const Division::Unit unit = army.GetUnits(i);
-		const int lines = army.GetLines(i);
-		const int gear = army.GetGear(i);
-		const int training = army.GetTraining(i);
+		const unsigned char lines = army.GetLines(i);
+		const unsigned char gear = army.GetGear(i);
+		const unsigned char training = army.GetTraining(i);
 		out.write(reinterpret_cast<const char*>(&unit), sizeof(unit));
 		out.write(reinterpret_cast<const char*>(&lines), sizeof(lines));
 		out.write(reinterpret_cast<const char*>(&gear), sizeof(gear));
@@ -76,9 +76,9 @@ Army SaveLoad::ArmyLoad(std::ifstream& in) const
 	in.read(reinterpret_cast<char*>(&posY), sizeof(posY));
 
 	Division::Unit units[4];
-	int lines[4];
-	int gear[4];
-	int training[4];
+	unsigned char lines[4];
+	unsigned char gear[4];
+	unsigned char training[4];
 	for (int i = 0; i < 4; ++i)
 	{
 		in.read(reinterpret_cast<char*>(&units[i]), sizeof(units[i]));
