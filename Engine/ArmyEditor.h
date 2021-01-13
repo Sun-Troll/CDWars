@@ -8,7 +8,7 @@ class ArmyEditor
 public:
 	ArmyEditor(const std::string& background_in, Army& player_in);
 	void Draw(Graphics& gfx, const RectI& drawRect, const Font& f) const;
-	void CheckButtons(const VecI& pos);
+	int CheckButtons(const VecI& pos);
 	void SetCurMoney(int money);
 private:
 	const std::string UnitsToStr(Division::Unit units) const;

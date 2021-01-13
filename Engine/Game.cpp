@@ -174,7 +174,7 @@ void Game::UpdateModel()
 			{
 				if (e.GetType() == Mouse::Event::Type::LPress)
 				{
-					armEdit.CheckButtons(VecI(e.GetPos()));
+					world.AddMoney(armEdit.CheckButtons(VecI(e.GetPos())));
 				}
 			}
 			else

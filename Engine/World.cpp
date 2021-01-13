@@ -245,6 +245,11 @@ int World::GetMoney() const
 	return money;
 }
 
+void World::AddMoney(int add)
+{
+	money += add;
+}
+
 void World::DrawPrepare()
 {
 	camRenderX = int(cameraPos.x) - Graphics::gameWidth / 2;

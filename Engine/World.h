@@ -28,6 +28,7 @@ public:
 	const std::vector<Army>& GetEnemies() const;
 	//misc
 	int GetMoney() const;
+	void AddMoney(int add);
 	//draw
 	void DrawPrepare();
 	void DrawMap(Graphics& gfx, const RectI& drawRect) const;

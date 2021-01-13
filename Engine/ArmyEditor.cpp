@@ -92,8 +92,9 @@ void ArmyEditor::Draw(Graphics& gfx, const RectI& drawRect, const Font& f) const
 	f.DrawText("confirm", confirmTL, cText, drawRect, gfx);
 }
 
-void ArmyEditor::CheckButtons(const VecI& pos)
+int ArmyEditor::CheckButtons(const VecI& pos)
 {
+	int totalCost = 0;
 	if (resetR.ContainsPoint(pos))
 	{
 		temp = player;
@@ -116,6 +117,7 @@ void ArmyEditor::CheckButtons(const VecI& pos)
 			c = 0;
 		}
 		curMoney -= gearTotalCost;
+		totalCost -= gearTotalCost;
 		gearTotalCost = 0;
 	}
 	else
@@ -140,6 +142,7 @@ void ArmyEditor::CheckButtons(const VecI& pos)
 			}
 		}
 	}
+	return totalCost;
 }
 
 void ArmyEditor::SetCurMoney(int money)
