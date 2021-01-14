@@ -110,6 +110,19 @@ void World::ArmiesMove(float dt)
 	}
 }
 
+bool World::ArmiesEngage(std::size_t& enemyIndex) const
+{
+	for (auto cur = enemies.cbegin(), end = enemies.cend(); cur < end; ++cur)
+	{
+		if (player.enemyEngage(*cur))
+		{
+			enemyIndex = cur - enemies.cbegin();
+			return true;
+		}
+	}
+	return false;
+}
+
 void World::EnemiesSetTarget(std::mt19937& rng)
 {
 	for (Army& a : enemies)

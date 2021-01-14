@@ -20,6 +20,7 @@ public:
 	void PlayerSetTarget(VecF target);
 	void PlayerSetState(Army::State state);
 	void ArmiesMove(float dt);
+	bool ArmiesEngage(std::size_t& enemyIndex) const;
 	void EnemiesSetTarget(std::mt19937& rng);
 	void SpawnEnemies(std::mt19937& rng);
 	Army& SetPlayer();

@@ -34,7 +34,6 @@ private:
 	static constexpr RectF battleRect{ -4095.0f, 4095.0f, -4095.0f, 4095.0f };
 	static constexpr int left = int(battleRect.left);
 	static constexpr int top = int(battleRect.top);
-	const Terrain curTer;
 	const std::unordered_map<Color, Terrain> cToTer{
 		{ World::GetForrest(), Terrain::Forrest },
 		{ World::GetSwamp(), Terrain::Swamp },
@@ -43,4 +42,5 @@ private:
 		{ World::GetTaiga(), Terrain::Taiga },
 		{ World::GetTundra(), Terrain::Tundra }
 	};
+	const Terrain curTer;
 };

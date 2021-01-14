@@ -162,6 +162,12 @@ void Game::UpdateModel()
 
 		world.EnemiesSetTarget(rngMain);
 		world.ArmiesMove(ft);
+
+		if (world.ArmiesEngage(enemyEngageIndex))
+		{
+			curMode = Mode::Battle;
+			bf = std::make_unique<Battlefield>(world.GetDessert()); // test change to color under player army
+		}
 	}
 
 	else if (curMode == Mode::ArmyEdit)
