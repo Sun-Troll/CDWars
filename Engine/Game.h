@@ -26,6 +26,7 @@
 #include "Menu.h"
 #include "Stopwatch.h"
 #include "ArmyEditor.h"
+#include "SaveLoad.h"
 
 class Game
 {
@@ -68,6 +69,7 @@ private:
 	World world;
 	Menu menu;
 	ArmyEditor armEdit;
+	SaveLoad sL;
 	Stopwatch frameTimer;
 	/********************************/
 };

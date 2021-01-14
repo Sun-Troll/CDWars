@@ -70,6 +70,7 @@ void Game::UpdateModel()
 
 	if (curMode == Mode::Map)
 	{
+		// call kill befor spawn!!!!
 		world.SpawnEnemies(rngMain);
 
 		bool left = false;
@@ -138,9 +139,20 @@ void Game::UpdateModel()
 				if (e.GetType() == Mouse::Event::Type::LPress)
 				{
 					menu.ChangeSelect(VecI(e.GetPos()));
+					const int save = menu.SaveButtons(VecI(e.GetPos()));
+					const int load = menu.LoadButtons(VecI(e.GetPos()));
 					if (menu.ToggleArmyEditor(VecI(e.GetPos())))
 					{
 						curMode = Mode::ArmyEdit;
+						armEdit.SetCurMoney(world.GetMoney());
+					}
+					else if (save != 0)
+					{
+						sL.Save(save, world.GetMoney(), world.GetPlayer(), world.GetEnemies());
+					}
+					else if (load != 0)
+					{
+						world.AddMoney(sL.Load(load, world.GetMoney(), world.SetPlayer(), world.SetEnemies()));
 					}
 				}
 			}
@@ -162,7 +174,7 @@ void Game::UpdateModel()
 			{
 				if (e.GetType() == Mouse::Event::Type::LPress)
 				{
-					armEdit.CheckButtons(VecI(e.GetPos()));
+					world.AddMoney(armEdit.CheckButtons(VecI(e.GetPos())));
 				}
 			}
 			else

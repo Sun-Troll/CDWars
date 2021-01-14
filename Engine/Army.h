@@ -6,7 +6,7 @@
 class Army
 {
 public:
-	enum class State
+	enum class State : unsigned char
 	{
 		March,
 		Scout,
@@ -14,12 +14,13 @@ public:
 	};
 public:
 	Army(State st_in, const VecF& pos,
-		Division::Unit unitsL, int nLinesL, int gearL, int trainingL,
-		Division::Unit unitsC, int nLinesC, int gearC, int trainingC,
-		Division::Unit unitsR, int nLinesR, int gearR, int trainingR,
-		Division::Unit unitsB, int nLinesB, int gearB, int trainingB);
+		Division::Unit unitsL, unsigned char nLinesL, unsigned char gearL, unsigned char trainingL,
+		Division::Unit unitsC, unsigned char nLinesC, unsigned char gearC, unsigned char trainingC,
+		Division::Unit unitsR, unsigned char nLinesR, unsigned char gearR, unsigned char trainingR,
+		Division::Unit unitsB, unsigned char nLinesB, unsigned char gearB, unsigned char trainingB);
 	void Move(float dt);
 	bool Detect(const Army& enemy) const;
+	void SetPos(const VecF& pos);
 	void SetTarget(const VecF& trg);
 	void SwitchState(State stNew);
 	const VecF& GetPos() const;
@@ -27,12 +28,12 @@ public:
 	float GetDetectRad() const;
 	State GetState() const;
 	//divisions
-	void SetLines(int i, bool more);
-	void SetGear(int i, bool more);
+	void SetLines(unsigned char i, bool more);
+	void SetGear(unsigned char i, bool more);
 	Division::Unit GetUnits(int i) const;
-	int GetLines(int i) const;
-	int GetGear(int i) const;
-	int GetTraining(int i) const;
+	unsigned char GetLines(int i) const;
+	unsigned char GetGear(int i) const;
+	unsigned char GetTraining(int i) const;
 private:
 	static constexpr float colRad = 16.0f;
 	static constexpr float dMarch = 1024.0f;

@@ -130,6 +130,7 @@ void World::EnemiesSetTarget(std::mt19937& rng)
 
 void World::SpawnEnemies(std::mt19937& rng)
 {
+	assert(enemies.capacity() == nEnemies);
 	while (enemies.size() < nEnemies)
 	{
 		VecF spawnPos{ 0.0f, 0.0f };
@@ -160,10 +161,10 @@ void World::SpawnEnemies(std::mt19937& rng)
 		Division::Unit unitC;
 		Division::Unit unitR;
 		Division::Unit unitB;
-		int linesL;
-		int linesC;
-		int linesR;
-		int linesB;
+		unsigned char linesL;
+		unsigned char linesC;
+		unsigned char linesR;
+		unsigned char linesB;
 		const int unitType = armyUnits(rng);
 		switch (unitType)
 		{
@@ -201,26 +202,32 @@ void World::SpawnEnemies(std::mt19937& rng)
 			break;
 		}
 
-		const int gtBase = gearTraining(rng);
-		const int aGear = (gtBase + gearTraining(rng)) / 2;
-		const int aTraining = (gtBase + gearTraining(rng)) / 2;
-		const int lG = (aGear + gearTraining(rng)) / 2;
-		const int lT = (aTraining + gearTraining(rng)) / 2;
-		const int cG = (aGear + gearTraining(rng)) / 2;
-		const int cT = (aTraining + gearTraining(rng)) / 2;
-		const int rG = (aGear + gearTraining(rng)) / 2;
-		const int rT = (aTraining + gearTraining(rng)) / 2;
-		const int bG = (aGear + gearTraining(rng)) / 2;
-		const int bT = (aTraining + gearTraining(rng)) / 2;
+		const unsigned char gtBase = gearTraining(rng);
+		const unsigned char aGear = (gtBase + gearTraining(rng)) / 2;
+		const unsigned char aTraining = (gtBase + gearTraining(rng)) / 2;
+		const unsigned char lG = (aGear + gearTraining(rng)) / 2;
+		const unsigned char lT = (aTraining + gearTraining(rng)) / 2;
+		const unsigned char cG = (aGear + gearTraining(rng)) / 2;
+		const unsigned char cT = (aTraining + gearTraining(rng)) / 2;
+		const unsigned char rG = (aGear + gearTraining(rng)) / 2;
+		const unsigned char rT = (aTraining + gearTraining(rng)) / 2;
+		const unsigned char bG = (aGear + gearTraining(rng)) / 2;
+		const unsigned char bT = (aTraining + gearTraining(rng)) / 2;
 
 		enemies.emplace_back(Army{ spawnState, spawnPos, unitL, linesL, lG, lT,
 			unitC, linesC, cG, cT, unitR, linesR, rG, rT, unitB, linesB, bG, bT });
 	}
+	assert(enemies.size() == enemies.capacity() && enemies.size() == nEnemies);
 }
 
 Army& World::SetPlayer()
 {
 	return player;
+}
+
+std::vector<Army>& World::SetEnemies()
+{
+	return enemies;
 }
 
 const Army& World::GetPlayer() const
@@ -236,6 +243,11 @@ const std::vector<Army>& World::GetEnemies() const
 int World::GetMoney() const
 {
 	return money;
+}
+
+void World::AddMoney(int add)
+{
+	money += add;
 }
 
 void World::DrawPrepare()
