@@ -137,6 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Army.h" />
+    <ClInclude Include="Battlefield.h" />
     <ClInclude Include="ChiliException.h" />
     <ClInclude Include="ChiliWin.h" />
     <ClInclude Include="Circ.h" />
@@ -167,6 +168,7 @@
   <ItemGroup>
     <ClCompile Include="Army.cpp" />
     <ClCompile Include="ArmyEditor.cpp" />
+    <ClCompile Include="Battlefield.cpp" />
     <ClCompile Include="COMInitializer.cpp" />
     <ClCompile Include="Division.cpp" />
     <ClCompile Include="DXErr.cpp" />

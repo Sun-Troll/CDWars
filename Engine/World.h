@@ -35,6 +35,13 @@ public:
 	void DrawArmies(Graphics& gfx, const RectI& drawRect) const;
 	void DrawHeading(Graphics& gfx) const;
 	void DrawDetect(Graphics& gfx) const;
+	// terrain colors
+	static Color GetForrest();
+	static Color GetSwamp();
+	static Color GetDessert();
+	static Color GetStonyDes();
+	static Color GetTaiga();
+	static Color GetTundra();
 private:
 	void LoadMap(Surface& map, const std::string& map_in);
 private:

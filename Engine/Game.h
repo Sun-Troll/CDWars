@@ -27,6 +27,8 @@
 #include "Stopwatch.h"
 #include "ArmyEditor.h"
 #include "SaveLoad.h"
+#include "Battlefield.h"
+#include <memory>
 
 class Game
 {
@@ -69,6 +71,7 @@ private:
 	World world;
 	Menu menu;
 	ArmyEditor armEdit;
+	std::unique_ptr<Battlefield> bf;
 	SaveLoad sL;
 	Stopwatch frameTimer;
 	/********************************/

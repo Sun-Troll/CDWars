@@ -300,6 +300,36 @@ void World::DrawDetect(Graphics & gfx) const
 	gfx.DrawCirc({ detectCenter, playerDetectRad / 2 }, Colors::Blue);
 }
 
+Color World::GetForrest()
+{
+	return forrest;
+}
+
+Color World::GetSwamp()
+{
+	return swamp;
+}
+
+Color World::GetDessert()
+{
+	return dessert;
+}
+
+Color World::GetStonyDes()
+{
+	return stonyDes;
+}
+
+Color World::GetTaiga()
+{
+	return taiga;
+}
+
+Color World::GetTundra()
+{
+	return tundra;
+}
+
 void World::LoadMap(Surface& map, const std::string& map_in)
 {
 	map = Surface{ map_in };
