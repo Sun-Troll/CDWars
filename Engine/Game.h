@@ -63,8 +63,8 @@ private:
 	Stopwatch updateAndDrawWatch;
 	float updateAndDrawTime = 0.0f;
 	std::string loadTime;
-	std::size_t enemyEngageIndex;
 	Stopwatch stLoad;
+	std::size_t enemyEngageIndex;
 	Font font;
 	std::random_device rd;
 	std::mt19937 rngMain;

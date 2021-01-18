@@ -165,6 +165,7 @@ void Game::UpdateModel()
 
 		if (world.ArmiesEngage(enemyEngageIndex))
 		{
+			menu.ToggleBattle();
 			curMode = Mode::Battle;
 			bf = std::make_unique<Battlefield>(world.GetDessert()); // test change to color under player army
 		}

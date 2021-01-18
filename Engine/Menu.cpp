@@ -38,6 +38,7 @@ void Menu::SetWorldCamPos(World& w, const VecF& pos) const
 
 void Menu::ChangeSelect(const VecI& pos)
 {
+	assert(sCur != Select::Battlefield);
 	if (gameSet.ContainsPoint(pos))
 	{
 		sCur = Select::Game;
@@ -52,13 +53,27 @@ void Menu::ChangeSelect(const VecI& pos)
 	}
 }
 
+void Menu::ToggleBattle()
+{
+	if (sCur == Select::Battlefield)
+	{
+		sCur = Select::Map;
+	}
+	else
+	{
+		sCur = Select::Battlefield;
+	}
+}
+
 bool Menu::ToggleArmyEditor(const VecI& pos) const
 {
+	assert(sCur != Select::Battlefield);
 	return sCur == Select::Divisions && armyEdit.ContainsPoint(pos);
 }
 
 int Menu::SaveButtons(const VecI& pos) const
 {
+	assert(sCur != Select::Battlefield);
 	if (sCur == Select::Game)
 	{
 		for (int i = 0; i < saveLoadsR.size() / 2; ++i)
@@ -74,6 +89,7 @@ int Menu::SaveButtons(const VecI& pos) const
 
 int Menu::LoadButtons(const VecI& pos) const
 {
+	assert(sCur != Select::Battlefield);
 	if (sCur == Select::Game)
 	{
 		for (int i = int(saveLoadsR.size()) / 2; i < saveLoadsR.size(); ++i)
@@ -90,81 +106,88 @@ int Menu::LoadButtons(const VecI& pos) const
 void Menu::DrawWorld(Graphics& gfx, const RectI& drawRect, const Font& f, const World& w) const
 {
 	gfx.DrawSprite(Graphics::gameWidth, 0, drawRect, background, SpriteEffect::Copy{});
-	std::string money = "Money: " + std::to_string(w.GetMoney());
-	gfx.DrawRect(gameSet, cText);
-	gfx.DrawRect(divSet, cText);
-	gfx.DrawRect(mapSet, cText);
-	f.DrawText("Game", { Graphics::gameWidth + leftPadding + bOff, gameSetY }, cText, drawRect, gfx);
-	f.DrawText("Divisions", { Graphics::gameWidth + leftPadding + bOff, divSetY }, cText, drawRect, gfx);
-	f.DrawText("Map", { Graphics::gameWidth + leftPadding + bOff, mapSetY }, cText, drawRect, gfx);
-	switch (sCur)
+	if (sCur == Select::Battlefield)
 	{
-	case Menu::Select::Game:
+		
+	}
+	else
 	{
-		for (const RectI& r : saveLoadsR)
+		std::string money = "Money: " + std::to_string(w.GetMoney());
+		gfx.DrawRect(gameSet, cText);
+		gfx.DrawRect(divSet, cText);
+		gfx.DrawRect(mapSet, cText);
+		f.DrawText("Game", { Graphics::gameWidth + leftPadding + bOff, gameSetY }, cText, drawRect, gfx);
+		f.DrawText("Divisions", { Graphics::gameWidth + leftPadding + bOff, divSetY }, cText, drawRect, gfx);
+		f.DrawText("Map", { Graphics::gameWidth + leftPadding + bOff, mapSetY }, cText, drawRect, gfx);
+		switch (sCur)
 		{
-			gfx.DrawRect(r, cText);
-		}
-		const int iHalf = int(saveLoadsTL.size()) / 2;
-		for (int i = 0; i < iHalf; ++i)
+		case Menu::Select::Game:
 		{
-			f.DrawText("Save" + std::to_string(i + 1), saveLoadsTL[i], cText, drawRect, gfx);
+			for (const RectI& r : saveLoadsR)
+			{
+				gfx.DrawRect(r, cText);
+			}
+			const int iHalf = int(saveLoadsTL.size()) / 2;
+			for (int i = 0; i < iHalf; ++i)
+			{
+				f.DrawText("Save" + std::to_string(i + 1), saveLoadsTL[i], cText, drawRect, gfx);
+			}
+			for (int i = iHalf; i < saveLoadsTL.size(); ++i)
+			{
+				f.DrawText("Load" + std::to_string(i - iHalf + 1), saveLoadsTL[i], cText, drawRect, gfx);
+			}
 		}
-		for (int i = iHalf; i < saveLoadsTL.size(); ++i)
+		break;
+		case Menu::Select::Divisions:
 		{
-			f.DrawText("Load" + std::to_string(i - iHalf + 1), saveLoadsTL[i], cText, drawRect, gfx);
+			const Army& pa = w.GetPlayer();
+			const std::string dl = "L: " + DivToStr(pa, 0);
+			const std::string dc = "C: " + DivToStr(pa, 1);
+			const std::string dr = "R: " + DivToStr(pa, 2);
+			const std::string db = "B: " + DivToStr(pa, 3);
+			f.DrawText(money, { Graphics::gameWidth + leftPadding, 150 }, cText, drawRect, gfx);
+			f.DrawText(dl, { Graphics::gameWidth + leftPadding, 190 }, cText, drawRect, gfx);
+			f.DrawText(dc, { Graphics::gameWidth + leftPadding, 260 }, cText, drawRect, gfx);
+			f.DrawText(dr, { Graphics::gameWidth + leftPadding, 330 }, cText, drawRect, gfx);
+			f.DrawText(db, { Graphics::gameWidth + leftPadding, 400 }, cText, drawRect, gfx);
+			f.DrawText("(C)enter (L)eft\n(R)ight (B)ack\n(L)ines (G)ear\n(T)raining",
+				{ Graphics::gameWidth + leftPadding, 480 }, cText, drawRect, gfx);
+			gfx.DrawRect(armyEdit, cText);
+			f.DrawText("Army Editor", { Graphics::gameWidth + leftPadding + bOff, armyEditY }, cText, drawRect, gfx);
 		}
-	}
 		break;
-	case Menu::Select::Divisions:
-	{
-		const Army& pa = w.GetPlayer();
-		const std::string dl = "L: " + DivToStr(pa, 0);
-		const std::string dc = "C: " + DivToStr(pa, 1);
-		const std::string dr = "R: " + DivToStr(pa, 2);
-		const std::string db = "B: " + DivToStr(pa, 3);
-		f.DrawText(money, { Graphics::gameWidth + leftPadding, 150 }, cText, drawRect, gfx);
-		f.DrawText(dl, { Graphics::gameWidth + leftPadding, 190 }, cText, drawRect, gfx);
-		f.DrawText(dc, { Graphics::gameWidth + leftPadding, 260 }, cText, drawRect, gfx);
-		f.DrawText(dr, { Graphics::gameWidth + leftPadding, 330 }, cText, drawRect, gfx);
-		f.DrawText(db, { Graphics::gameWidth + leftPadding, 400 }, cText, drawRect, gfx);
-		f.DrawText("(C)enter (L)eft\n(R)ight (B)ack\n(L)ines (G)ear\n(T)raining",
-			{ Graphics::gameWidth + leftPadding, 480 }, cText, drawRect, gfx);
-		gfx.DrawRect(armyEdit, cText);
-		f.DrawText("Army Editor", { Graphics::gameWidth + leftPadding + bOff, armyEditY }, cText, drawRect, gfx);
-	}
-		break;
-	case Menu::Select::Map:
-	{
-		const Army& pa = w.GetPlayer();
-		const std::string playerState = "State: " + StateToStr(pa.GetState());
-		const std::string playerPos = "Army position:\n" + std::to_string(pa.GetPos().x)
-			+ '\n' + std::to_string(pa.GetPos().y);
-		const std::string targetPos = "Target position:\n" + std::to_string(pa.GetTarget().x)
-			+ '\n' + std::to_string(pa.GetTarget().y);
-		const std::string camPosStr = "Camera position:\n" + std::to_string(w.GetCamPos().x)
-			+ '\n' + std::to_string(w.GetCamPos().y);
-		f.DrawText(money, { Graphics::gameWidth + leftPadding, 290 }, cText, drawRect, gfx);
-		f.DrawText(playerState, { Graphics::gameWidth + leftPadding, 330 }, cText, drawRect, gfx);
-		f.DrawText(playerPos, { Graphics::gameWidth + leftPadding, 370 }, cText, drawRect, gfx);
-		f.DrawText(targetPos, { Graphics::gameWidth + leftPadding, 480 }, cText, drawRect, gfx);
-		f.DrawText(camPosStr, { Graphics::gameWidth + leftPadding, 590 }, cText, drawRect, gfx);
-	}
-		break;
-	default:
-		break;
-	}
-	gfx.DrawSprite(Graphics::gameWidth + leftPadding, minimapTop, drawRect, wMinimap, SpriteEffect::Copy{});
-	for (const Army& a : w.GetEnemies())
-	{
-		if (w.GetPlayer().Detect(a))
+		case Menu::Select::Map:
 		{
-			gfx.DrawCross(VecI(a.GetPos() / mapToMinimap + mapCorOffset), 2, Colors::Red);
+			const Army& pa = w.GetPlayer();
+			const std::string playerState = "State: " + StateToStr(pa.GetState());
+			const std::string playerPos = "Army position:\n" + std::to_string(pa.GetPos().x)
+				+ '\n' + std::to_string(pa.GetPos().y);
+			const std::string targetPos = "Target position:\n" + std::to_string(pa.GetTarget().x)
+				+ '\n' + std::to_string(pa.GetTarget().y);
+			const std::string camPosStr = "Camera position:\n" + std::to_string(w.GetCamPos().x)
+				+ '\n' + std::to_string(w.GetCamPos().y);
+			f.DrawText(money, { Graphics::gameWidth + leftPadding, 290 }, cText, drawRect, gfx);
+			f.DrawText(playerState, { Graphics::gameWidth + leftPadding, 330 }, cText, drawRect, gfx);
+			f.DrawText(playerPos, { Graphics::gameWidth + leftPadding, 370 }, cText, drawRect, gfx);
+			f.DrawText(targetPos, { Graphics::gameWidth + leftPadding, 480 }, cText, drawRect, gfx);
+			f.DrawText(camPosStr, { Graphics::gameWidth + leftPadding, 590 }, cText, drawRect, gfx);
 		}
+		break;
+		default:
+			break;
+		}
+		gfx.DrawSprite(Graphics::gameWidth + leftPadding, minimapTop, drawRect, wMinimap, SpriteEffect::Copy{});
+		for (const Army& a : w.GetEnemies())
+		{
+			if (w.GetPlayer().Detect(a))
+			{
+				gfx.DrawCross(VecI(a.GetPos() / mapToMinimap + mapCorOffset), 2, Colors::Red);
+			}
+		}
+		gfx.DrawCross(VecI(w.GetCamPos() / mapToMinimap + mapCorOffset), 6, Colors::Black);
+		gfx.DrawCross(VecI(w.GetPlayer().GetPos() / mapToMinimap + mapCorOffset), 5, Colors::Blue);
+		gfx.DrawCross(VecI(w.GetPlayer().GetTarget() / mapToMinimap + mapCorOffset), 4, Colors::White);
 	}
-	gfx.DrawCross(VecI(w.GetCamPos() / mapToMinimap + mapCorOffset), 6, Colors::Black);
-	gfx.DrawCross(VecI(w.GetPlayer().GetPos() / mapToMinimap + mapCorOffset), 5, Colors::Blue);
-	gfx.DrawCross(VecI(w.GetPlayer().GetTarget() / mapToMinimap + mapCorOffset), 4, Colors::White);
 }
 
 const std::string Menu::UnitsToStr(Division::Unit units) const

@@ -9,12 +9,14 @@ public:
 	{
 		Game,
 		Divisions,
-		Map
+		Map,
+		Battlefield
 	};
 public:
 	Menu(const std::string& background_in, const std::string& wMinimap_in);
 	void SetWorldCamPos(World& w, const VecF& pos) const;
 	void ChangeSelect(const VecI& pos);
+	void ToggleBattle();
 	bool ToggleArmyEditor(const VecI& pos) const;
 	int SaveButtons(const VecI& pos) const;
 	int LoadButtons(const VecI& pos) const;
